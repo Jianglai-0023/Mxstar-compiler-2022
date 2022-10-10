@@ -2,6 +2,23 @@ grammar MxstarGrammar;
 options {
    language=Java;
 }
+//------------parser---------//
+//stmt : expr;
+primaryExpression:
+                 DIGIT
+                 |This
+                 |LeftParen expression RightParen
+                 |idExpression
+                 |lambdaExpression;
+
+expression: assignmentExpression(Comma assignmentExpression)*;
+
+lambdaExpression_in:
+                LeftBracket And RightBracket (LeftParen Parameters? RightParen)? Arrow LeftBrace Statements RightBrace LeftParen Parameters RightParen;
+
+
+lambdaExpression_out:
+                   LeftBracket RightBracket (LeftParen Parameters? RightParen)? Arrow LeftBrace Statements RightBrace LeftParen Parameters RightParen;
 
 //Do not rename:keyworld
 
@@ -40,10 +57,12 @@ Continue: 'continue';
 Return: 'return';
 
 //Operators
-//标识符 todo
-fragment DIGIT:[0-9];
+//标识符
+DIGIT:[1-9][0-9]* | '0';
 
-fragment NONDIGIT: [a-zA-Z_];
+NONDIGIT: [a-zA-Z_];//下划线的意思
+
+
 
 LeftParen: '(';
 
@@ -110,13 +129,17 @@ Comma: ',';
 
 Semi: ';';
 
+Arrow:'->';
+
 //特殊符号 todo
 Whitespace: [ \t]+ -> skip;
 
+Newline: ('\r' '\n'? | '\n') -> skip;
+
 LineComment: '//' ~ [\r\n]* -> skip;
 
-
-
+fragment ESC: '\\"'|'\\\\' |'\\n';
+StringLiteral: '"'(ESC|.)*?'"';
 
 
 
