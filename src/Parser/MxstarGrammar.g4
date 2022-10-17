@@ -55,7 +55,7 @@ constantExpression:
                   |Null;
 //className:Identifer;
 
-arrayDeclaration: theTypeName LeftBracket RightBracket Identifier(','Identifier)* (Equal expression)?;
+arrayDeclaration: theTypeName LeftBracket RightBracket Identifier (Equal expression)? (','Identifier (Equal expression)?)*;
 
 jaggedarrayDeclaration: theTypeName (LeftBracket RightBracket)+ Identifier(','Identifier)* (Equal expression)?;
 
