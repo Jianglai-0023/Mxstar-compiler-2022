@@ -47,12 +47,6 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#statementSeq}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStatementSeq(MxstarGrammarParser.StatementSeqContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#selectionStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -70,6 +64,12 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#forInitialStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
 	 * @param ctx the parse tree

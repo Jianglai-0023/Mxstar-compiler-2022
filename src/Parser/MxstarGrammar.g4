@@ -4,7 +4,7 @@ options {
 }
 //------------parser---------//
 //stmt : expr;
-program:(declarationStatement|classDeclaration|functionDeclaration|arrayDeclaration|jaggedarrayDeclaration)* mainFn;
+program:(declarationStatement|classDeclaration|functionDeclaration)* mainFn;
 
 mainFn:Int 'main' LeftParen RightParen compoundStatement EOF;
 //------statement语句--------//
@@ -25,12 +25,12 @@ declarationStatement:
 
 expressionStatement:expression? Semi;
 
-compoundStatement: LeftBrace statementSeq? RightBrace;
+compoundStatement: LeftBrace statement* RightBrace;
 
-statementSeq: statement+;
+//statementSeq: statement+;
 
 selectionStatement:
-	If LeftParen condition RightParen statement (Else (statement))?;
+	If LeftParen expression RightParen statement (Else (statement))?;
 
 jumpStatement:
             Return expression? Semi
@@ -40,41 +40,55 @@ jumpStatement:
 iterationStatement:
 	While LeftParen condition RightParen statement
 	| For LeftParen (
-		(primaryDeclaration|expression)? Semi expression? Semi expression?
+		(forInitialStatement)?  condition? Semi expression?//都用stmtnode
 	) RightParen statement;
 
-
+forInitialStatement:declarationStatement|expressionStatement;
 
 //suite: LeftBrace statement* RightBrace;
-
+//---------------------------------------//
 constantExpression:
                   True
                   |False
                   |DIGIT
                   |StringLiteral
-                  |Null;
-//className:Identifer;
+                  |Null
+                  |This
+                  |Identifier;
 
-arrayDeclaration: theTypeName LeftBracket RightBracket Identifier (Equal expression)? (','Identifier (Equal expression)?)*;
+primaryExpression:
+                 constantExpression
+                 |functionExpression
+                 |lambdaExpression_in//lambda node
+                 |lambdaExpression_out
+                 |newExpression
+//                 |arrayVisit //addr node
+//                 |jaggedarrayVisit//addr node
+//                 |arrayFunctionExpression//自带函数
+//                 |stringFunctionExpression//自带函数
+                 |LeftParen expression RightParen
+//                 |memberVisit //member dot node(expression . identifer)//todo
+                 |newExpression;
 
-jaggedarrayDeclaration: theTypeName (LeftBracket RightBracket)+ Identifier(','Identifier)* (Equal expression)?;
 
-arrayVisit: (Identifier|LeftParen arrayCreate RightParen) LeftBracket expression RightBracket;
+arrayExpression: (primaryExpression) (LeftBracket expression RightBracket)*;
 
-arraySize:DIGIT;
+memberExpression:arrayExpression(Dot arrayExpression)*;
 
-arrayCreate:New theTypeName LeftBracket arraySize RightBracket;
+//arraySize:DIGIT;
 
-jaggedarrayCreate:New theTypeName LeftBracket arraySize RightBracket (LeftBracket arraySize? RightBracket)+;
+//arrayCreate:New theTypeName LeftBracket arraySize RightBracket;
 
-jaggedarrayVisit:Identifier (LeftBracket expression RightBracket)+;
+//jaggedarrayCreate:New theTypeName LeftBracket arraySize RightBracket (LeftBracket arraySize? RightBracket)+;
+
+//jaggedarrayVisit:Identifier (LeftBracket expression RightBracket)+;
 
 theTypeName:
-           Bool
+           (Bool
            |Void
            |Int
            |String
-           |Identifier;
+           |Identifier)(LeftBracket expression? RightBracket)*;//array
 //function-函数//
 functionParametersList:
                       theTypeName Identifier (',' theTypeName Identifier )*;
@@ -91,9 +105,7 @@ functionDeclaration:
 
 
 primaryDeclaration:
-     theTypeName Identifier (Equal expression)? (',' Identifier (Equal expression)?)*
-     |arrayDeclaration
-     |jaggedarrayDeclaration ;
+     theTypeName Identifier (Equal expression)? (',' Identifier (Equal expression)?)*;
 
 //class-类//
 classConstructor:
@@ -104,37 +116,28 @@ classDeclaration:
                (declarationStatement|classConstructor|functionDeclaration)*
                RightBrace Semi;
 
-classMemberVisit:
-             Identifier Dot (This | (Identifier ((LeftParen functionCallList? RightParen)|(LeftBracket expression RightBracket)+)?));
-//expression-表达式//
-primaryExpression:
-                 constantExpression
-                 |This
-                 |Identifier
-                 |functionExpression
-                 |lambdaExpression_in
-                 |lambdaExpression_out
-                 |arrayVisit
-                 |jaggedarrayVisit
-                 |arrayFunctionExpression
-                 |stringFunctionExpression
-                 |arrayCreate
-                 |LeftParen expression RightParen
-                 |classMemberVisit
-                 |jaggedarrayCreate
-                 |creatClass;
-creatClass:
-     New Identifier (LeftParen RightParen)?;
-arrayFunctionExpression:
-           Identifier (LeftBracket expression RightBracket)* Dot 'size'LeftParen RightParen;
 
-stringFunctionExpression:
-   StringLiteral Dot functionExpression;
+//expression-表达式//
+
+
+newExpression:
+        New theTypeName (LeftParen RightParen)?;
+
+//arrayFunctionExpression:
+//           Identifier (LeftBracket expression RightBracket)* Dot 'size'LeftParen RightParen;
+
+//stringFunctionExpression:
+//   StringLiteral Dot functionExpression;
+
+//memberVisit:
+//             expression Dot (This | (Identifier ((LeftParen functionCallList? RightParen)|(LeftBracket expression RightBracket)+)?));
+selfExpression:
+    memberExpression(PlusPlus|MinusMinus);
 
 singleExpression:
-      primaryExpression|
-     (PlusPlus|MinusMinus)singleExpression|
-     singleExpression (PlusPlus|MinusMinus);
+      selfExpression|
+     (PlusPlus|MinusMinus)selfExpression|
+     selfExpression (PlusPlus|MinusMinus);
 
 postExpression:
       singleExpression|

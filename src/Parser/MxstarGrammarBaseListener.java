@@ -88,18 +88,6 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatementSeq(MxstarGrammarParser.StatementSeqContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStatementSeq(MxstarGrammarParser.StatementSeqContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -131,6 +119,18 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

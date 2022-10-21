@@ -68,16 +68,6 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 */
 	void exitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#statementSeq}.
-	 * @param ctx the parse tree
-	 */
-	void enterStatementSeq(MxstarGrammarParser.StatementSeqContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#statementSeq}.
-	 * @param ctx the parse tree
-	 */
-	void exitStatementSeq(MxstarGrammarParser.StatementSeqContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#selectionStatement}.
 	 * @param ctx the parse tree
 	 */
@@ -107,6 +97,16 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#forInitialStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#forInitialStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
 	 * @param ctx the parse tree
