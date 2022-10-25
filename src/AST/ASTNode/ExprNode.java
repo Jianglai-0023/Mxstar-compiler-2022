@@ -6,7 +6,8 @@ import Util.position;
 
 public abstract class ExprNode extends ASTNode {
     public String type;
-    public entity val;
+    public int dim;
+
 
     public ExprNode(position pos) {
         super(pos);
@@ -15,4 +16,5 @@ public abstract class ExprNode extends ASTNode {
     public boolean isAssignable() {
         return false;
     }
+
 }
