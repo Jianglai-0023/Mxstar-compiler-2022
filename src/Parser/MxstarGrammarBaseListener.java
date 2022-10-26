@@ -40,210 +40,6 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatement(MxstarGrammarParser.StatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStatement(MxstarGrammarParser.StatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterJumpStatement(MxstarGrammarParser.JumpStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitJumpStatement(MxstarGrammarParser.JumpStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIterationStatement(MxstarGrammarParser.IterationStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayDeclaration(MxstarGrammarParser.ArrayDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayDeclaration(MxstarGrammarParser.ArrayDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterJaggedarrayDeclaration(MxstarGrammarParser.JaggedarrayDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitJaggedarrayDeclaration(MxstarGrammarParser.JaggedarrayDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayVisit(MxstarGrammarParser.ArrayVisitContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayVisit(MxstarGrammarParser.ArrayVisitContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArraySize(MxstarGrammarParser.ArraySizeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArraySize(MxstarGrammarParser.ArraySizeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayCreate(MxstarGrammarParser.ArrayCreateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayCreate(MxstarGrammarParser.ArrayCreateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterJaggedarrayCreate(MxstarGrammarParser.JaggedarrayCreateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitJaggedarrayCreate(MxstarGrammarParser.JaggedarrayCreateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterJaggedarrayVisit(MxstarGrammarParser.JaggedarrayVisitContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitJaggedarrayVisit(MxstarGrammarParser.JaggedarrayVisitContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunctionParametersList(MxstarGrammarParser.FunctionParametersListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -275,18 +71,6 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunctionIdentifier(MxstarGrammarParser.FunctionIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunctionExpression(MxstarGrammarParser.FunctionExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionExpression(MxstarGrammarParser.FunctionExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -340,13 +124,25 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClassMemberVisit(MxstarGrammarParser.ClassMemberVisitContext ctx) { }
+	@Override public void enterTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitClassMemberVisit(MxstarGrammarParser.ClassMemberVisitContext ctx) { }
+	@Override public void exitTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -364,37 +160,13 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCreatClass(MxstarGrammarParser.CreatClassContext ctx) { }
+	@Override public void enterSelfExpression(MxstarGrammarParser.SelfExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCreatClass(MxstarGrammarParser.CreatClassContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArrayFunctionExpression(MxstarGrammarParser.ArrayFunctionExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArrayFunctionExpression(MxstarGrammarParser.ArrayFunctionExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterStringFunctionExpression(MxstarGrammarParser.StringFunctionExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStringFunctionExpression(MxstarGrammarParser.StringFunctionExpressionContext ctx) { }
+	@Override public void exitSelfExpression(MxstarGrammarParser.SelfExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -580,25 +352,25 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLambdaExpression_in(MxstarGrammarParser.LambdaExpression_inContext ctx) { }
+	@Override public void enterLambdaExpression(MxstarGrammarParser.LambdaExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLambdaExpression_in(MxstarGrammarParser.LambdaExpression_inContext ctx) { }
+	@Override public void exitLambdaExpression(MxstarGrammarParser.LambdaExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLambdaExpression_out(MxstarGrammarParser.LambdaExpression_outContext ctx) { }
+	@Override public void enterNewExpression(MxstarGrammarParser.NewExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLambdaExpression_out(MxstarGrammarParser.LambdaExpression_outContext ctx) { }
+	@Override public void exitNewExpression(MxstarGrammarParser.NewExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -611,6 +383,102 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCondition(MxstarGrammarParser.ConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStatement(MxstarGrammarParser.StatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStatement(MxstarGrammarParser.StatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterJumpStatement(MxstarGrammarParser.JumpStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJumpStatement(MxstarGrammarParser.JumpStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIterationStatement(MxstarGrammarParser.IterationStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -28,176 +28,6 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 */
 	void exitMainFn(MxstarGrammarParser.MainFnContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#statement}.
-	 * @param ctx the parse tree
-	 */
-	void enterStatement(MxstarGrammarParser.StatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#statement}.
-	 * @param ctx the parse tree
-	 */
-	void exitStatement(MxstarGrammarParser.StatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#declarationStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#declarationStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#expressionStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#expressionStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#compoundStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#compoundStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#selectionStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#selectionStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#jumpStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterJumpStatement(MxstarGrammarParser.JumpStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#jumpStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitJumpStatement(MxstarGrammarParser.JumpStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#iterationStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterIterationStatement(MxstarGrammarParser.IterationStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#iterationStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#forInitialStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#forInitialStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#arrayDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayDeclaration(MxstarGrammarParser.ArrayDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#arrayDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayDeclaration(MxstarGrammarParser.ArrayDeclarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#jaggedarrayDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterJaggedarrayDeclaration(MxstarGrammarParser.JaggedarrayDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#jaggedarrayDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitJaggedarrayDeclaration(MxstarGrammarParser.JaggedarrayDeclarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#arrayVisit}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayVisit(MxstarGrammarParser.ArrayVisitContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#arrayVisit}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayVisit(MxstarGrammarParser.ArrayVisitContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#arraySize}.
-	 * @param ctx the parse tree
-	 */
-	void enterArraySize(MxstarGrammarParser.ArraySizeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#arraySize}.
-	 * @param ctx the parse tree
-	 */
-	void exitArraySize(MxstarGrammarParser.ArraySizeContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#arrayCreate}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayCreate(MxstarGrammarParser.ArrayCreateContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#arrayCreate}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayCreate(MxstarGrammarParser.ArrayCreateContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#jaggedarrayCreate}.
-	 * @param ctx the parse tree
-	 */
-	void enterJaggedarrayCreate(MxstarGrammarParser.JaggedarrayCreateContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#jaggedarrayCreate}.
-	 * @param ctx the parse tree
-	 */
-	void exitJaggedarrayCreate(MxstarGrammarParser.JaggedarrayCreateContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#jaggedarrayVisit}.
-	 * @param ctx the parse tree
-	 */
-	void enterJaggedarrayVisit(MxstarGrammarParser.JaggedarrayVisitContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#jaggedarrayVisit}.
-	 * @param ctx the parse tree
-	 */
-	void exitJaggedarrayVisit(MxstarGrammarParser.JaggedarrayVisitContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#theTypeName}.
-	 * @param ctx the parse tree
-	 */
-	void enterTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#theTypeName}.
-	 * @param ctx the parse tree
-	 */
-	void exitTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#functionParametersList}.
 	 * @param ctx the parse tree
 	 */
@@ -227,16 +57,6 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionIdentifier(MxstarGrammarParser.FunctionIdentifierContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#functionExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionExpression(MxstarGrammarParser.FunctionExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#functionExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionExpression(MxstarGrammarParser.FunctionExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#functionDeclaration}.
 	 * @param ctx the parse tree
@@ -278,15 +98,25 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 */
 	void exitClassDeclaration(MxstarGrammarParser.ClassDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#classMemberVisit}.
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#theTypeName}.
 	 * @param ctx the parse tree
 	 */
-	void enterClassMemberVisit(MxstarGrammarParser.ClassMemberVisitContext ctx);
+	void enterTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#classMemberVisit}.
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#theTypeName}.
 	 * @param ctx the parse tree
 	 */
-	void exitClassMemberVisit(MxstarGrammarParser.ClassMemberVisitContext ctx);
+	void exitTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#primaryExpression}.
 	 * @param ctx the parse tree
@@ -298,35 +128,15 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 */
 	void exitPrimaryExpression(MxstarGrammarParser.PrimaryExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#creatClass}.
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#selfExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterCreatClass(MxstarGrammarParser.CreatClassContext ctx);
+	void enterSelfExpression(MxstarGrammarParser.SelfExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#creatClass}.
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#selfExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitCreatClass(MxstarGrammarParser.CreatClassContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#arrayFunctionExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayFunctionExpression(MxstarGrammarParser.ArrayFunctionExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#arrayFunctionExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayFunctionExpression(MxstarGrammarParser.ArrayFunctionExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#stringFunctionExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterStringFunctionExpression(MxstarGrammarParser.StringFunctionExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#stringFunctionExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitStringFunctionExpression(MxstarGrammarParser.StringFunctionExpressionContext ctx);
+	void exitSelfExpression(MxstarGrammarParser.SelfExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#singleExpression}.
 	 * @param ctx the parse tree
@@ -478,25 +288,25 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 */
 	void exitExpression(MxstarGrammarParser.ExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#lambdaExpression_in}.
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#lambdaExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterLambdaExpression_in(MxstarGrammarParser.LambdaExpression_inContext ctx);
+	void enterLambdaExpression(MxstarGrammarParser.LambdaExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#lambdaExpression_in}.
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#lambdaExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitLambdaExpression_in(MxstarGrammarParser.LambdaExpression_inContext ctx);
+	void exitLambdaExpression(MxstarGrammarParser.LambdaExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#lambdaExpression_out}.
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#newExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterLambdaExpression_out(MxstarGrammarParser.LambdaExpression_outContext ctx);
+	void enterNewExpression(MxstarGrammarParser.NewExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#lambdaExpression_out}.
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#newExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitLambdaExpression_out(MxstarGrammarParser.LambdaExpression_outContext ctx);
+	void exitNewExpression(MxstarGrammarParser.NewExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#condition}.
 	 * @param ctx the parse tree
@@ -507,4 +317,84 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCondition(MxstarGrammarParser.ConditionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatement(MxstarGrammarParser.StatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatement(MxstarGrammarParser.StatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#declarationStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#declarationStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#expressionStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#expressionStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#compoundStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#compoundStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#selectionStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#selectionStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#jumpStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterJumpStatement(MxstarGrammarParser.JumpStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#jumpStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitJumpStatement(MxstarGrammarParser.JumpStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#iterationStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIterationStatement(MxstarGrammarParser.IterationStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#iterationStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#forInitialStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#forInitialStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx);
 }

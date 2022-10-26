@@ -19,7 +19,7 @@ functionIdentifier: Identifier;
 
 
 functionDeclaration:
-                  theTypeName Identifier LeftParen functionParametersList? RightParen  LeftBrace statement RightBrace;
+                  theTypeName Identifier LeftParen functionParametersList? RightParen  compoundStatement;
 
 primaryDeclaration:
      theTypeName Identifier (Equal expression)? (',' Identifier (Equal expression)?)*;
@@ -56,10 +56,9 @@ primaryExpression:
                  |primaryExpression (Dot Identifier)// member
                  |newExpression
                  |primaryExpression LeftBracket expression RightBracket //array
-                 |lambdaExpression_in//lambda node
-                 |lambdaExpression_out;
+                 |lambdaExpression;
 
-
+//lambdaExpression:lambdaExpression_out|lambdaExpression_in;
 selfExpression:
     primaryExpression(PlusPlus|MinusMinus)?;//single
 
@@ -112,11 +111,11 @@ assignmentExpression:
 
 expression:assignmentExpression;//binary
 
-lambdaExpression_in:
-                LeftBracket And RightBracket (LeftParen functionParametersList? RightParen)? Arrow statement LeftParen functionCallList? RightParen;
+lambdaExpression:
+                LeftBracket And? RightBracket (LeftParen functionParametersList? RightParen)? Arrow compoundStatement LeftParen functionCallList? RightParen;
 
-lambdaExpression_out:
-                   LeftBracket RightBracket (LeftParen functionParametersList? RightParen)? Arrow statement LeftParen functionCallList? RightParen;
+//lambdaExpression_out:
+//                   LeftBracket RightBracket (LeftParen functionParametersList? RightParen)? Arrow compoundStatement LeftParen functionCallList? RightParen;
 
 newExpression:
         New theTypeName (LeftParen RightParen)?;

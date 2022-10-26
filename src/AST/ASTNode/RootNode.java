@@ -1,5 +1,6 @@
-package AST;
+package AST.ASTNode;
 
+import AST.ASTVisitor;
 import Util.position;
 
 import java.util.ArrayList;

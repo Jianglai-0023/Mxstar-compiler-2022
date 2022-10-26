@@ -1,13 +1,12 @@
-package AST;
+package AST.ASTNode;
 
+import AST.ASTVisitor;
 import Util.position;
-
-import java.util.ArrayList;
 
 
 public class FunDecNode extends StmtNode {
     public String type;
-    public StmtNode stmt;
+    public ComStmtNode stmt;
     public String idn;
 
     public FunDecNode(position pos) {

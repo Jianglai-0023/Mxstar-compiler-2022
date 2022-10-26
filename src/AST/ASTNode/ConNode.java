@@ -1,10 +1,9 @@
-package AST;
+package AST.ASTNode;
 
-import MIR.entity;
-import Util.Type;
+import AST.ASTVisitor;
 import Util.position;
 
-public class ConNode extends ASTNode {
+public class ConNode extends ASTNode {//condition
     public String type;
     public ExprNode exp;
 

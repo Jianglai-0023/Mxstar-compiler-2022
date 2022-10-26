@@ -1,8 +1,7 @@
-package AST;
+package AST.ASTNode;
+import AST.ASTVisitor;
 import Util.Type;
 import Util.position;
-
-import java.util.ArrayList;
 
 public class FnRootNode extends ASTNode {
     public ComStmtNode stmts;

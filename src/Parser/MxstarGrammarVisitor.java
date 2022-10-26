@@ -23,108 +23,6 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMainFn(MxstarGrammarParser.MainFnContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStatement(MxstarGrammarParser.StatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#declarationStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#expressionStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#compoundStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#selectionStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#jumpStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitJumpStatement(MxstarGrammarParser.JumpStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#iterationStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#forInitialStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#arrayDeclaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayDeclaration(MxstarGrammarParser.ArrayDeclarationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#jaggedarrayDeclaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitJaggedarrayDeclaration(MxstarGrammarParser.JaggedarrayDeclarationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#arrayVisit}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayVisit(MxstarGrammarParser.ArrayVisitContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#arraySize}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArraySize(MxstarGrammarParser.ArraySizeContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#arrayCreate}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayCreate(MxstarGrammarParser.ArrayCreateContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#jaggedarrayCreate}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitJaggedarrayCreate(MxstarGrammarParser.JaggedarrayCreateContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#jaggedarrayVisit}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitJaggedarrayVisit(MxstarGrammarParser.JaggedarrayVisitContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#theTypeName}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#functionParametersList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -142,12 +40,6 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionIdentifier(MxstarGrammarParser.FunctionIdentifierContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#functionExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionExpression(MxstarGrammarParser.FunctionExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#functionDeclaration}.
 	 * @param ctx the parse tree
@@ -173,11 +65,17 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitClassDeclaration(MxstarGrammarParser.ClassDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#classMemberVisit}.
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#theTypeName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitClassMemberVisit(MxstarGrammarParser.ClassMemberVisitContext ctx);
+	T visitTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#primaryExpression}.
 	 * @param ctx the parse tree
@@ -185,23 +83,11 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrimaryExpression(MxstarGrammarParser.PrimaryExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#creatClass}.
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#selfExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCreatClass(MxstarGrammarParser.CreatClassContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#arrayFunctionExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayFunctionExpression(MxstarGrammarParser.ArrayFunctionExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#stringFunctionExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStringFunctionExpression(MxstarGrammarParser.StringFunctionExpressionContext ctx);
+	T visitSelfExpression(MxstarGrammarParser.SelfExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#singleExpression}.
 	 * @param ctx the parse tree
@@ -293,21 +179,69 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpression(MxstarGrammarParser.ExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#lambdaExpression_in}.
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#lambdaExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLambdaExpression_in(MxstarGrammarParser.LambdaExpression_inContext ctx);
+	T visitLambdaExpression(MxstarGrammarParser.LambdaExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#lambdaExpression_out}.
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#newExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLambdaExpression_out(MxstarGrammarParser.LambdaExpression_outContext ctx);
+	T visitNewExpression(MxstarGrammarParser.NewExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCondition(MxstarGrammarParser.ConditionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStatement(MxstarGrammarParser.StatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#declarationStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#expressionStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#compoundStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#selectionStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSelectionStatement(MxstarGrammarParser.SelectionStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#jumpStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitJumpStatement(MxstarGrammarParser.JumpStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#iterationStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#forInitialStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForInitialStatement(MxstarGrammarParser.ForInitialStatementContext ctx);
 }

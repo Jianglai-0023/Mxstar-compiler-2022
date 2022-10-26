@@ -1,7 +1,6 @@
-package AST;
+package AST.ASTNode;
 
-import MIR.entity;
-import Util.Type;
+import AST.ASTVisitor;
 import Util.position;
 
 public class ClsstruNode extends ASTNode {

@@ -1,4 +1,4 @@
-package AST;
+package AST.ASTNode;
 
 
 public class TypeDefinition{
