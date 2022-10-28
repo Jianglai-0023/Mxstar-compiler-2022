@@ -35,12 +35,6 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionCallList(MxstarGrammarParser.FunctionCallListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MxstarGrammarParser#functionIdentifier}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionIdentifier(MxstarGrammarParser.FunctionIdentifierContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#functionDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -70,6 +64,12 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#bracket}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBracket(MxstarGrammarParser.BracketContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
 	 * @param ctx the parse tree

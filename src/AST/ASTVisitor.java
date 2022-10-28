@@ -39,4 +39,5 @@ void visit(RootNode it);
     void visit(NewExNode it);
     void visit(ArrExNode it);
     void visit(LamExNode it);
+    void visit(JpStmtNode it);
 }

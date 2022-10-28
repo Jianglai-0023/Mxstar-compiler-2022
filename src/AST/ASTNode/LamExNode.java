@@ -1,23 +1,22 @@
 package AST.ASTNode;
 
 import AST.ASTVisitor;
+import Util.ClsType;
+import Util.Type;
 import Util.position;
 
 import java.util.ArrayList;
 
 public class LamExNode extends ExprNode {
-    public String type;
-    public ArrayList<ExprNode> parameters;
-    //todo namespace
-    public ComStmtNode stmt;
-    public ArrayList<ExprNode>call_lists;
+    public ArrayList<ExprNode> parameters = null;
+    public ArrayList<StmtNode> stmts;
+    public ArrayList<ExprNode>call_lists = null;
     public boolean is_in;
 
 
-    public LamExNode(position pos,String type_,ComStmtNode st) {
+
+    public LamExNode(position pos) {
         super(pos);
-        type = type_;
-        stmt = st;
     }
 
     @Override public void accept(ASTVisitor visitor){visitor.visit(this);}

@@ -4,8 +4,8 @@ import AST.ASTVisitor;
 import Util.position;
 
 public class ClsstruNode extends ASTNode {
-    public String type;
-    public ExprNode exp;
+    public String idn;
+    public StmtNode stmt;
 
     public ClsstruNode(position pos) {
         super(pos);

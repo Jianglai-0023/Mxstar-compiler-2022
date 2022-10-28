@@ -48,16 +48,6 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 */
 	void exitFunctionCallList(MxstarGrammarParser.FunctionCallListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxstarGrammarParser#functionIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionIdentifier(MxstarGrammarParser.FunctionIdentifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MxstarGrammarParser#functionIdentifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionIdentifier(MxstarGrammarParser.FunctionIdentifierContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#functionDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -107,6 +97,16 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#bracket}.
+	 * @param ctx the parse tree
+	 */
+	void enterBracket(MxstarGrammarParser.BracketContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#bracket}.
+	 * @param ctx the parse tree
+	 */
+	void exitBracket(MxstarGrammarParser.BracketContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#constantExpression}.
 	 * @param ctx the parse tree

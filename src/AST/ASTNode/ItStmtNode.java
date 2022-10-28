@@ -15,6 +15,8 @@ public class ItStmtNode extends StmtNode {
 
     public ConNode con;
 
+    public boolean is_while;
+
     public ItStmtNode(position pos) {
         super (pos);
     }

@@ -6,13 +6,13 @@ import Util.position;
 import java.util.ArrayList;
 
 public class NewExNode extends ExprNode {
-    public String type;
     public String idn;
+    public ArrayList<ExprNode> exps;
+    public boolean err_array = false;
 
 
-    public NewExNode(position pos,String type_,String idn_) {
+    public NewExNode(position pos,String idn_) {
         super(pos);
-        type = type_;
         idn = idn_;
     }
 

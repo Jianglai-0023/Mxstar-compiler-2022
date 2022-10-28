@@ -3,9 +3,12 @@ package AST;
 import AST.ASTNode.*;
 import Parser.MxstarGrammarBaseVisitor;
 import Parser.MxstarGrammarParser;
+import Util.VarDef;
 import Util.globalScope;
 import Util.position;
 import org.antlr.v4.runtime.ParserRuleContext;
+import Util.OP;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
 
@@ -26,7 +29,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
         return ans;
     }
     public String get_type(MxstarGrammarParser.TheTypeNameContext typename){
-        String ans = "Wrong";
         if(typename.Bool()!=null){
             return typename.Bool().getText();
         }
@@ -42,7 +44,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
         else if(typename.Identifier()!=null){
             return typename.Identifier().getText();
         }
-        return ans;
+        else return "none";
     }
     private globalScope gScope;
     public ASTBuilder(globalScope gScope){ this.gScope = gScope;}
@@ -83,29 +85,37 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
         return node;
     }
 
+    @Override public ASTNode visitClassConstructor(MxstarGrammarParser.ClassConstructorContext ctx){
+        ClsstruNode node = new ClsstruNode(new position(ctx));
+        node.idn = ctx.Identifier().getText();
+        node.stmt = (StmtNode) visit(ctx.statement());
+        return node;
+    }
+
     @Override public ASTNode visitFunctionDeclaration(MxstarGrammarParser.FunctionDeclarationContext ctx){
         FunDecNode node = new FunDecNode(new position(ctx));
         node.stmt = (ComStmtNode)visit(ctx.compoundStatement());
-        node.type = ctx.theTypeName().getText();
+//        node.type = ctx.theTypeName().getText();
         node.idn = ctx.Identifier().getText();
+        if(ctx.functionParametersList()!=null){
+            for(int i = 0; i < ctx.functionParametersList().Identifier().size(); i++){
+                node.para.add(new VarDef(get_type(ctx.functionParametersList().theTypeName(i)),ctx.functionParametersList().Identifier(i).getText(),new position(ctx.functionParametersList().Identifier(i))));
+            }
+        }
         return node;
     }
 
     @Override public ASTNode visitMainFn(MxstarGrammarParser.MainFnContext ctx){
-        FnRootNode root = new FnRootNode(new position(ctx),(ComStmtNode)visit(ctx.compoundStatement()));
-        return root;
-
+        return new FnRootNode(new position(ctx),(ComStmtNode)visit(ctx.compoundStatement()));
     }
 
     @Override public ASTNode visitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx){
         ComStmtNode com = new ComStmtNode(new position(ctx));
-
         if(ctx.statement() != null){
             for(ParserRuleContext stmt:ctx.statement()){
                 com.stmts.add((StmtNode) visit(stmt));
             }
         }
-
         return com;
     }
 
@@ -117,6 +127,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
               if(ctx.primaryDeclaration().expression()!=null){
                   for(ParserRuleContext exps:ctx.primaryDeclaration().expression())stmt.exprs.add((ExprNode) visit(exps));
               }
+              ctx.primaryDeclaration().Identifier().forEach(p->stmt.idn.add(new VarDef(stmt.type,p.getText(),new position(p))));
           }
      return stmt;
     }
@@ -125,7 +136,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
 
     @Override public ASTNode visitExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx){
         ExprStmtNode node = new ExprStmtNode(new position(ctx));
-
         if(ctx.expression()!=null){
             node.exp = (ExprNode) visit(ctx.expression());
         }
@@ -142,24 +152,24 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitJumpStatement(MxstarGrammarParser.JumpStatementContext ctx){
        JpStmtNode node = new JpStmtNode(new position(ctx));
        if(ctx.Return()!=null){
-           node.type = ctx.Return().getText();
-
+           node.is_return = true;
            if(ctx.expression()!=null){
                node.exp = (ExprNode) visit(ctx.expression());
-               node.re_type = node.exp.type;
            }
        }
-       else if(ctx.Break()!=null)node.type = ctx.Break().getText();
-       else node.type = ctx.Continue().getText();
+//       else if(ctx.Break()!=null)node.type = ctx.Break().getText();
+//       else node.type = ctx.Continue().getText();
        return node;
     }
     @Override public ASTNode visitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx){
         ItStmtNode node = new ItStmtNode(new position(ctx));
          if(ctx.While()!=null){
+             node.is_while = true;
              node.con = (ConNode) visit(ctx.condition());
              node.stmt = (StmtNode) visit(ctx.statement());
          }
          else{
+             node.is_while = false;
              node.stmt = (StmtNode) visit(ctx.statement());
              if(ctx.forInitialStatement()!=null){
                  if(ctx.forInitialStatement().declarationStatement()!=null)node.ini_stmt = (DecStmtNode)visit(ctx.forInitialStatement().declarationStatement());
@@ -178,7 +188,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitCondition(MxstarGrammarParser.ConditionContext ctx){
         ConNode node = new ConNode(new position(ctx));
         node.exp = (ExprNode) visit(ctx.expression());
-        node.type = node.exp.type;
+//        node.type = node.exp.type;
         return node;
     }
 
@@ -194,7 +204,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitLogicalOrExpression(MxstarGrammarParser.LogicalOrExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.logicalAndExpression(0));
         for(int i = 1; i < ctx.logicalAndExpression().size(); ++i){
-            node = new BiExNode(new position(ctx),ctx.OrOr().toString(),"bool",node,(ExprNode) visit(ctx.logicalAndExpression(i)));
+            node = new BiExNode(new position(ctx),OP.OROR,node,(ExprNode) visit(ctx.logicalAndExpression(i)));
         }
         return node;
     }
@@ -202,7 +212,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitLogicalAndExpression(MxstarGrammarParser.LogicalAndExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.inclusiveOrExpression(0));
         for(int i = 1; i < ctx.inclusiveOrExpression().size(); ++i){
-            node = new BiExNode(new position(ctx),ctx.AndAnd().toString(),"bool",node,(ExprNode) visit(ctx.inclusiveOrExpression(i)));
+            node = new BiExNode(new position(ctx),OP.PLUSPLUS,node,(ExprNode) visit(ctx.inclusiveOrExpression(i)));
         }
         return node;
     }
@@ -210,7 +220,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitInclusiveOrExpression(MxstarGrammarParser.InclusiveOrExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.exclusiveOrExpression(0));
         for(int i = 1; i < ctx.exclusiveOrExpression().size(); ++i){
-            node = new BiExNode(new position(ctx),ctx.Or().toString(),"bool",node,(ExprNode) visit(ctx.exclusiveOrExpression(i)));
+            node = new BiExNode(new position(ctx),OP.OR,node,(ExprNode) visit(ctx.exclusiveOrExpression(i)));
         }
         return node;
 //        if(ctx.Or()!=null){//todo type
@@ -219,7 +229,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitExclusiveOrExpression(MxstarGrammarParser.ExclusiveOrExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.andExpression(0));
         for(int i = 1; i < ctx.andExpression().size(); ++i){
-            node = new BiExNode(new position(ctx),ctx.Caret().toString(),"bool",node,(ExprNode) visit(ctx.andExpression(i)));
+            node = new BiExNode(new position(ctx),OP.CARET,node,(ExprNode) visit(ctx.andExpression(i)));
         }
         return node;
 //        if(ctx.Caret()!=null){//todo type
@@ -228,7 +238,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitAndExpression(MxstarGrammarParser.AndExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.equalityExpression(0));
         for(int i = 1; i < ctx.equalityExpression().size(); ++i){
-            node = new BiExNode(new position(ctx),ctx.And().toString(),"bool",node,(ExprNode) visit(ctx.equalityExpression(i)));
+            node = new BiExNode(new position(ctx),OP.AND,node,(ExprNode) visit(ctx.equalityExpression(i)));
         }
         return node;
 //        if(ctx.And()!=null){//todo type
@@ -237,8 +247,8 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitEqualityExpression(MxstarGrammarParser.EqualityExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.relationalExpression(0));
         for(int i = 1; i < ctx.relationalExpression().size(); ++i){
-            String str = (ctx.EqualEqual(i-1)!=null) ? ctx.EqualEqual(i-1).toString():ctx.NotEqual(i-1).toString();
-            node = new BiExNode(new position(ctx),str,"bool",node,(ExprNode) visit(ctx.relationalExpression(i)));
+            OP str = (ctx.EqualEqual(i-1)!=null) ? OP.EQUALEQUAL:OP.NOTEQUAL;
+            node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.relationalExpression(i)));
         }
         return node;
     }
@@ -246,12 +256,12 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitRelationalExpression(MxstarGrammarParser.RelationalExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.shiftExpression(0));
         for(int i = 1; i < ctx.shiftExpression().size(); ++i){
-            String str = "Wrong_";
-            if(ctx.Greater().size()>i&&ctx.Greater(i-1)!=null)str = ctx.Greater(i-1).toString();
-            else if (ctx.Less().size()>i&&ctx.Less(i-1)!=null)str = ctx.Less(i-1).toString();
-            else if(ctx.LessEqual().size()>i&&ctx.LessEqual(i-1)!=null)str = ctx.LessEqual(i-1).toString();
-            else if(ctx.GreaterEqual().size()>i&&ctx.GreaterEqual(i-1)!=null)str = ctx.GreaterEqual(i-1).toString();
-            node = new BiExNode(new position(ctx),str,"bool",node,(ExprNode) visit(ctx.shiftExpression(i)));
+            OP str = OP.NONE;
+            if(ctx.Greater().size()>i&&ctx.Greater(i-1)!=null)str = OP.GREATER;
+            else if (ctx.Less().size()>i&&ctx.Less(i-1)!=null)str = OP.LESS;
+            else if(ctx.LessEqual().size()>i&&ctx.LessEqual(i-1)!=null)str = OP.LESSEQUAL;
+            else if(ctx.GreaterEqual().size()>i&&ctx.GreaterEqual(i-1)!=null)str = OP.GREATEREQUAL;
+            node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.shiftExpression(i)));
         }
         return node;
     }
@@ -259,98 +269,110 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitShiftExpression(MxstarGrammarParser.ShiftExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.additiveExpression(0));
         for(int i = 1; i < ctx.additiveExpression().size(); ++i){
-            String str = (ctx.shiftOperator(i-1).Greater()!=null) ? ctx.shiftOperator(i-1).Greater().toString():ctx.shiftOperator(i-1).Less().toString();
-            node = new BiExNode(new position(ctx),str,"shift",node,(ExprNode) visit(ctx.additiveExpression(i)));
+            OP str = (ctx.shiftOperator(i-1).Greater()!=null) ? OP.GREATER:OP.LESS;
+            node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.additiveExpression(i)));
         }
         return node;
     }
     @Override public ASTNode visitAdditiveExpression(MxstarGrammarParser.AdditiveExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.multiplicativeExpression(0));
         for(int i = 1; i < ctx.multiplicativeExpression().size(); ++i){
-            String str = (ctx.Plus(i-1)!=null) ? ctx.Plus(i-1).toString():ctx.Minus(i-1).toString();
-            node = new BiExNode(new position(ctx),str,"additive",node,(ExprNode) visit(ctx.multiplicativeExpression(i)));
+            OP str = (ctx.Plus(i-1)!=null) ? OP.PLUS:OP.MINUS;
+            node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.multiplicativeExpression(i)));
         }
         return node;
     }
     @Override public ASTNode visitMultiplicativeExpression(MxstarGrammarParser.MultiplicativeExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.postExpression(0));
         for(int i = 1; i < ctx.postExpression().size(); ++i){
-            String str;
-            if(ctx.Div(i-1)!=null)str = ctx.Div().toString();
-            else if(ctx.Mod(i-1)!=null)str = ctx.Mod().toString();
-            else str = ctx.Star().toString();
-            node = new BiExNode(new position(ctx),str,"multi",node,(ExprNode) visit(ctx.postExpression(i)));
+            OP str;
+            if(ctx.Div(i-1)!=null)str =OP.DIV;
+            else if(ctx.Mod(i-1)!=null)str = OP.MOD;
+            else str = OP.STAR;
+            node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.postExpression(i)));
         }
         return node;
     }
     @Override public ASTNode visitPostExpression(MxstarGrammarParser.PostExpressionContext ctx){
-        ExprNode node;
-        if(ctx.singleExpression()!=null) node = (ExprNode) visit(ctx.singleExpression());
+
+        if(ctx.singleExpression()!=null) return visit(ctx.singleExpression());
         else {
-            String str;
-            if(ctx.Not()!=null)str = ctx.Not().toString();
-            else if(ctx.Wavy()!=null)str = ctx.Wavy().toString();
-            else if(ctx.Minus()!=null)str = ctx.Minus().toString();
-            else str = ctx.Plus().toString();
-            node = new SinExNode(new position(ctx),str,"postexp");
+            OP str;
+            if(ctx.Not()!=null)str = OP.NOT;
+            else if(ctx.Wavy()!=null)str =OP.WAVY;
+            else if(ctx.Minus()!=null)str =OP.MINUS;
+            else str = OP.PLUS;
+           SinExNode node = new SinExNode(new position(ctx),str);
+            node.exp = (ExprNode) visit(ctx.postExpression());
+            return node;
         }
-        return node;
     }
 
     @Override public ASTNode visitSingleExpression(MxstarGrammarParser.SingleExpressionContext ctx){
         ExprNode node;
-        String str;
-       if(ctx.PlusPlus()!=null)str = ctx.PlusPlus().toString();
-       else if(ctx.MinusMinus()!= null)str = ctx.MinusMinus().toString();
+        OP str;
+       if(ctx.PlusPlus()!=null)str = OP.PLUSPLUS;
+       else if(ctx.MinusMinus()!= null)str = OP.MINUSMINUS;
        else {
            node = (ExprNode)visit(ctx.selfExpression());
            return node;
        }
-       node = new SinExNode(new position(ctx),str,"single");
+       node = new SinExNode(new position(ctx),str);
        return node;
     }
 
     @Override public ASTNode visitSelfExpression(MxstarGrammarParser.SelfExpressionContext ctx){
       ExprNode node;
-      String str;
+      OP str;
       if(ctx.PlusPlus()==null && ctx.MinusMinus()==null)node = (ExprNode) visit(ctx.primaryExpression());
       else{
-          if(ctx.PlusPlus()==null)str = ctx.MinusMinus().toString();
-          else str = ctx.PlusPlus().toString();
-          node = new SinExNode(new position(ctx),str,"self");
+          if(ctx.PlusPlus()==null)str = OP.MINUSMINUS;
+          else str = OP.PLUSPLUS;
+          node = new SinExNode(new position(ctx),str);
       }
       return node;
     }
 
     @Override public ASTNode visitPrimaryExpression(MxstarGrammarParser.PrimaryExpressionContext ctx){
       if(ctx.constantExpression()!=null){
-          ConExNode node = new ConExNode(new position(ctx),ctx.constantExpression().toString(),"constant");
-          return node;
+          return new ConExNode(new position(ctx),"constant");
       }
       else if(ctx.LeftParen()!=null && ctx.expression()!=null)return visit(ctx.expression());
-      else if(ctx.functionCallList()!=null){
-          FunExNode node = new FunExNode(new position(ctx),"fun");
-          ctx.functionCallList().expression().forEach(it->node.calllist.add((ExprNode)visit(it)));
+      else if(ctx.functionCallList()!=null||ctx.primaryExpression()!=null && ctx.LeftParen()!=null){
+          FunExNode node = new FunExNode(new position(ctx));
+          node.exp = (ExprNode) visit(ctx.primaryExpression());
+          if(ctx.functionCallList()!=null)ctx.functionCallList().expression().forEach(it->node.calllist.add((ExprNode)visit(it)));
           return node;
       }
       else if(ctx.Dot()!=null){//member
-          MemExNode node = new MemExNode(new position(ctx),"todo_mem_type",(ExprNode) visit(ctx.primaryExpression()),ctx.Identifier().toString());
-          return node;
+          return new MemExNode(new position(ctx),(ExprNode) visit(ctx.primaryExpression()),ctx.Identifier().getText());
       }
       else if(ctx.newExpression()!=null){//new
-          NewExNode node = new NewExNode(new position(ctx),"todo_new_type",ctx.newExpression().theTypeName().toString());
-          return node;
+          return (NewExNode)visit(ctx.newExpression());
       } else if (ctx.LeftBracket() != null) {//array
-          ArrExNode node = new ArrExNode(new position(ctx),"todo_array_type",(ExprNode)visit(ctx.primaryExpression()),(ExprNode)visit(ctx.expression()));
-          return node;
+          ExprNode pri = (ExprNode) visit(ctx.primaryExpression());
+          int dim = pri.dim + 1;
+          return new ArrExNode(new position(ctx),pri,(ExprNode)visit(ctx.expression()),dim);
       }
       else{//lambda
-         LamExNode node= new LamExNode (new position(ctx),"todo_lam_type",(ComStmtNode) visit(ctx.lambdaExpression().compoundStatement()));
-          if(ctx.lambdaExpression().And()!=null)node.is_in = false;
-          else node.is_in = true;
+         LamExNode node= new LamExNode (new position(ctx));
+          node.is_in = (ctx.lambdaExpression().And() == null);
+          ctx.lambdaExpression().statement().forEach(i->node.stmts.add((StmtNode) visit(i)));
           ctx.lambdaExpression().functionCallList().expression().forEach(it->node.call_lists.add((ExprNode) visit(it)));//todo parameter_list
           return node;
       }
     }
-
+    @Override public ASTNode visitNewExpression(MxstarGrammarParser.NewExpressionContext ctx){
+        NewExNode node = new NewExNode(new position(ctx),get_type(ctx.theTypeName()));
+        node.dim = get_dim(ctx.theTypeName().getText());
+        boolean flag = false;
+        for(int i = 0; i < ctx.theTypeName().bracket().size(); ++i){
+            if(ctx.theTypeName().bracket(i).expression()==null)flag = true;
+            if(ctx.theTypeName().bracket(i).expression()!=null&&flag){
+                node.err_array = true;
+                break;
+            }
+        }
+        return node;
+    }
 }

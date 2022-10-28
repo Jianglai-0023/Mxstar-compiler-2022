@@ -64,18 +64,6 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionIdentifier(MxstarGrammarParser.FunctionIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctionIdentifier(MxstarGrammarParser.FunctionIdentifierContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunctionDeclaration(MxstarGrammarParser.FunctionDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -131,6 +119,18 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTheTypeName(MxstarGrammarParser.TheTypeNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBracket(MxstarGrammarParser.BracketContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBracket(MxstarGrammarParser.BracketContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -6,14 +6,12 @@ options {
 //stmt : expr;
 program:(declarationStatement|classDeclaration|functionDeclaration)* mainFn;
 
-mainFn:Int 'main' LeftParen RightParen compoundStatement EOF;
+mainFn:Int 'Compiler' LeftParen RightParen compoundStatement EOF;
 //-----------Func-----------//
 functionParametersList:
                       theTypeName Identifier (',' theTypeName Identifier )*;
 
 functionCallList: expression (','expression)*;
-
-functionIdentifier: Identifier;
 
 //functionExpression:
 
@@ -38,8 +36,8 @@ theTypeName:
            |Int
            |String
            |Identifier)
-           (LeftBracket expression? RightBracket)*;//array
-
+           bracket*;//array
+bracket: LeftBracket expression? RightBracket;
 constantExpression:
                   True
                   |False
@@ -112,7 +110,7 @@ assignmentExpression:
 expression:assignmentExpression;//binary
 
 lambdaExpression:
-                LeftBracket And? RightBracket (LeftParen functionParametersList? RightParen)? Arrow compoundStatement LeftParen functionCallList? RightParen;
+                LeftBracket And? RightBracket (LeftParen functionParametersList? RightParen)? Arrow LeftBracket statement* RightBracket LeftParen functionCallList? RightParen;
 
 //lambdaExpression_out:
 //                   LeftBracket RightBracket (LeftParen functionParametersList? RightParen)? Arrow compoundStatement LeftParen functionCallList? RightParen;

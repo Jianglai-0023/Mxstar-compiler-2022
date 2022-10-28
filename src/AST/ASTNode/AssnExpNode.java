@@ -4,8 +4,6 @@ import AST.ASTVisitor;
 import Util.position;
 
 public class AssnExpNode extends ExprNode {
-    public String type;
-    public int dim;
     public ExprNode leftson;
     public ExprNode rightson;
 
