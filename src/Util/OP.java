@@ -5,13 +5,15 @@ public enum OP{
     STAR,
     DIV,
     MOD,
+
     EQUAL,
     LESS,
     GREATER,
-    EQUALEQUAL,
-    NOTEQUAL,
+
     LESSEQUAL,
     GREATEREQUAL,
+    EQUALEQUAL,
+    NOTEQUAL,
     ANDAND,
     OROR,
     NOT,

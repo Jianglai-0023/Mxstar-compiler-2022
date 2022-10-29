@@ -14,6 +14,9 @@ public class SemanticsCheck implements ASTVisitor {
         currentScope = this.gScope = gScope;
     }
     public boolean type_equal(ClsType x,ClsType y){
+        if(x.idn.equals("null")&&y.dim!=0||(y.idn.equals("null")&&x.dim!=0))return true;
+        if(!y.idn.equals("int")&&!y.idn.equals("bool")&&!y.idn.equals("string")&&!x.idn.equals("null")||!x.idn.equals("int")&&!x.idn.equals("bool")&&!x.idn.equals("string")&&!y.idn.equals("null"))
+            return true;
         return x.idn.equals(y.idn)&&x.dim==y.dim;
     }
     @Override
@@ -163,9 +166,14 @@ public class SemanticsCheck implements ASTVisitor {
          if(it.op.compareTo(OP.LESS)>=0&& it.op.compareTo(OP.NOT) <= 0)it.type = gScope.getClsTypeFromName("bool",it.pos);
          else it.type = it.lson.type;
 
-         if(it.op.compareTo(OP.PLUS)>0 && it.op.compareTo(OP.MOD)<=0 && !it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type",it.pos);
          if(it.op.compareTo(OP.PLUS)==0 && !it.lson.type.idn.equals("string")&&!it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type",it.pos);
-         if(it.type.idn.equals("bool")&&(it.op!=OP.EQUALEQUAL&&it.op!=OP.NOTEQUAL))throw new semanticError("wrong op for bool",it.pos);
+
+         else if(it.op.compareTo(OP.PLUS)>0 && it.op.compareTo(OP.MOD)<=0 && !it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type",it.pos);
+         else if(it.op.compareTo(OP.LESS) >= 0 && it.op.compareTo(OP.NOTEQUAL)<=0 && (!it.lson.type.idn.equals("string") && !it.lson.type.idn.equals("int")))throw new semanticError("wrong plus type",it.pos);
+         else if(it.op.compareTo(OP.ANDAND)>0 && it.op.compareTo(OP.NOT)<=0 && !it.lson.type.idn.equals("bool"))throw new semanticError("wrong plus type",it.pos);
+         else if(it.op.compareTo(OP.AND)>=0 && it.op.compareTo(OP.MINUSMINUS)<=0&&!it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type",it.pos);
+//         else if(it.op.compareTo(OP.EQUALEQUAL) >= 0 && it.op.compareTo(OP.NOTEQUAL)<=0 && (!it.lson.type.idn.equals("string") && !it.lson.type.idn.equals("int")))throw new semanticError("wrong plus type",it.pos)
+
          if(it.lson.is_left_val && it.rson.is_left_val)it.is_left_val = true;
     }
 
