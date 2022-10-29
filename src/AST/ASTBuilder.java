@@ -33,9 +33,9 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
         if(typename.Bool()!=null){
             return typename.Bool().getText();
         }
-        else if(typename.Void()!=null){
-            return typename.Void().getText();
-        }
+//        else if(typename.Void()!=null){
+//            return typename.Void().getText();
+//        }
         else if(typename.Int()!=null){
             return typename.Int().getText();
         }
@@ -96,8 +96,11 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitFunctionDeclaration(MxstarGrammarParser.FunctionDeclarationContext ctx){
         FunDecNode node = new FunDecNode(new position(ctx));
         node.stmt = (ComStmtNode)visit(ctx.compoundStatement());
-        node.re_type_name = get_type(ctx.theTypeName());
-        node.dim = get_dim(ctx.theTypeName().getText());
+        if(ctx.theTypeName()==null)node.re_type_name = "void";
+        else{
+            node.re_type_name = get_type(ctx.theTypeName());
+            node.dim = get_dim(ctx.theTypeName().getText());
+        }
         node.idn = ctx.Identifier().getText();
         if(ctx.functionParametersList()!=null){
             for(int i = 0; i < ctx.functionParametersList().Identifier().size(); i++){
@@ -357,7 +360,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
           return visit(ctx.newExpression());
       } else if (ctx.LeftBracket() != null) {//array
           ExprNode pri = (ExprNode) visit(ctx.primaryExpression());
-          int dim = pri.dim + 1;
+          int dim = pri.dim - 1;
           return new ArrExNode(new position(ctx),pri,(ExprNode)visit(ctx.expression()),dim);
       }
       else{//lambda

@@ -6,7 +6,7 @@ import Util.position;
 import java.util.ArrayList;
 
 
-public class ComStmtNode extends ASTNode {
+public class ComStmtNode extends StmtNode {
     //    public position pos;
     public ArrayList<StmtNode> stmts;
     public ComStmtNode(position pos) {

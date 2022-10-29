@@ -17,7 +17,7 @@ functionCallList: expression (','expression)*;
 
 
 functionDeclaration:
-                  theTypeName Identifier LeftParen functionParametersList? RightParen  compoundStatement;
+                  (theTypeName|Void) Identifier LeftParen functionParametersList? RightParen  compoundStatement;
 
 primaryDeclaration:
      theTypeName Identifier (Equal expression)? (',' Identifier (Equal expression)?)*;
@@ -32,7 +32,6 @@ classDeclaration:
 //-----------Expr-----------//
 theTypeName:
            (Bool
-           |Void
            |Int
            |String
            |Identifier)

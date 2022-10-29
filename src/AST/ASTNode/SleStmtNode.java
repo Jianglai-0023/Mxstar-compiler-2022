@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class SleStmtNode extends StmtNode {
     public ExprNode exp;
 
-    public ArrayList<StmtNode> stmts;
+    public ArrayList<StmtNode> stmts = new ArrayList<>();
 
     public SleStmtNode(position pos) {
         super (pos);

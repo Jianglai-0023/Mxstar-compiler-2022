@@ -14,6 +14,7 @@ public class FunExNode extends ExprNode {
 
     public FunExNode(position pos) {
         super(pos);
+        calllist = new ArrayList<>();
     }
 
     @Override public void accept(ASTVisitor visitor){visitor.visit(this);}

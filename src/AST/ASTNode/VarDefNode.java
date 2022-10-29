@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class VarDefNode extends ExprNode {
     //    public position pos;
     public String idn;
+    boolean is_func = false;
 
     public VarDefNode(position pos,String idn_, int dim_) {
         super (pos);

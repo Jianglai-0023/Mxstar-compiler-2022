@@ -38,6 +38,30 @@ public class SymbolCollector implements ASTVisitor {
         ClsType Null = new ClsType("null");
         this.gScope.addclsType("null",Null,new position(0,0));
 
+        FunType Print = new FunType(Void);
+        Print.calllist.add(new ClsVarType(String,"str"));
+        this.gScope.addfunType("print",Print,new position(0,0));
+
+        FunType PrintLn = new FunType(Void);
+        PrintLn.calllist.add(new ClsVarType(String,"str"));
+        this.gScope.addfunType("println",PrintLn,new position(0,0));
+
+        FunType PrintInt = new FunType(Void);
+        PrintInt.calllist.add(new ClsVarType(Int,"n"));
+        this.gScope.addfunType("printInt",PrintInt,new position(0,0));
+
+        FunType GetString = new FunType(String);
+//        Getstring.calllist.add(new ClsVarType(String,"str"));
+        this.gScope.addfunType("getString",GetString,new position(0,0));
+
+        FunType GetInt = new FunType(Int);
+//        GetInt.calllist.add(new ClsVarType(String,"str"));
+        this.gScope.addfunType("getInt",GetInt,new position(0,0));
+
+        FunType Tstring = new FunType(String);
+        Tstring.calllist.add(new ClsVarType(Int,"i"));
+        this.gScope.addfunType("toString",Tstring,new position(0,0));
+
 //        ClsType Array = new ClsType("array");
 //        this.gScope.addclsType("array",Array,new position(0,0));
     }
@@ -53,7 +77,7 @@ public class SymbolCollector implements ASTVisitor {
     public void visit(DecStmtNode it) {
             for(int j = 0; j < it.var.size(); ++j){
                 ClsType dec= gScope.getClsTypeFromName(it.var.get(j).type,it.var.get(j).pos);
-                now_class.var.add(new ClsVarType(dec,it.var.get(j).idn));
+                gScope.is_cls.var.add(new ClsVarType(dec,it.var.get(j).idn));
             }
     }
     @Override
@@ -64,12 +88,12 @@ public class SymbolCollector implements ASTVisitor {
         }
         else {
             ClsType my = gScope.getClsTypeFromName(it.idn,it.pos);
+            gScope.is_cls = my;
             for(int i = 0; i < it.funs.size(); ++i){
-                FunType fun = new FunType(gScope.getClsTypeFromName(it.funs.get(i).re_type_name,it.funs.get(i).pos));//不管几维数组都已经被定义了
-                my.fun.put(it.funs.get(i).idn,fun);
+                it.funs.get(i).accept(this);
             }
-            now_class = my;
             it.decs.forEach(p-> p.accept(this));
+            gScope.is_cls = null;
         }
     }
     @Override
@@ -79,7 +103,8 @@ public class SymbolCollector implements ASTVisitor {
              ClsType pa = gScope.getClsTypeFromName(it.para.get(i).type,it.pos);
              t.calllist.add(new ClsVarType(pa,it.para.get(i).idn));
          }
-         gScope.addfunType(it.idn,t,it.pos);
+         if(gScope.is_cls==null) gScope.addfunType(it.idn,t,it.pos);
+         else gScope.is_cls.fun.put(it.idn,t);
     }
     @Override
     public void visit(FnRootNode it) {}

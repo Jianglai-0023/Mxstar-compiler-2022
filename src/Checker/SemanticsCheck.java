@@ -41,6 +41,16 @@ public class SemanticsCheck implements ASTVisitor {
     @Override
     public void visit(VarDefNode it) {
         it.type = currentScope.getVarType(it.idn,true);
+        if(it.type==null){
+            if(currentScope.is_cls!=null){
+                it.fun_type=currentScope.is_cls.fun.get(it.idn);
+                if(it.fun_type==null){
+                    it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
+                }
+            }
+            else it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
+            return;
+        }
         it.is_left_val = true;
     }
 
@@ -70,7 +80,8 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(SleStmtNode it) {
-        if(!it.exp.type.equals("bool"))throw new semanticError("Semantic Error: if expression not bool",it.pos);
+        it.exp.accept(this);
+        if(!it.exp.type.idn.equals("bool"))throw new semanticError("Semantic Error: if expression not bool",it.pos);
         it.stmts.forEach(i->i.accept(this));
     }
 
@@ -101,6 +112,7 @@ public class SemanticsCheck implements ASTVisitor {
     public void visit(ClsDecNode it) {
         //symbol collector的时候已经在global collector中增加名字了
         currentScope = new Scope(currentScope);
+        currentScope.is_cls = gScope.getClsTypeFromName(it.idn,it.pos);
         it.decs.forEach(i->i.accept(this));
         if(it.constructs.size()>1)throw new semanticError("Semantics Error: ClsDec too many contruct function",it.pos);
         it.constructs.forEach(i->i.accept(this));
@@ -150,9 +162,12 @@ public class SemanticsCheck implements ASTVisitor {
     public void visit(BiExNode it) {
          it.lson.accept(this);
          it.rson.accept(this);
-         if(it.lson.type.dim != 0 && !it.rson.type.idn.equals("null")||it.rson.type.dim != 0 && !it.lson.type.idn.equals("null"))throw new semanticError("bi arraytype",it.pos);
+         if(it.op==OP.EQUALEQUAL || it.op == OP.NOTEQUAL){
+             if(it.lson.type.dim != 0 && !it.rson.type.idn.equals("null")||it.rson.type.dim != 0 && !it.lson.type.idn.equals("null"))throw new semanticError("bi arraytype",it.pos);
+         }
          else if(!type_equal(it.lson.type,it.rson.type))throw new semanticError("unmatch type in BI",it.pos);
-         it.type = it.lson.type;
+         if(it.op.compareTo(OP.LESS)>=0&& it.op.compareTo(OP.NOT) <= 0)it.type = gScope.getClsTypeFromName("bool",it.pos);
+         else it.type = it.lson.type;
          if(it.type.idn.equals("bool")&&(it.op!=OP.EQUALEQUAL&&it.op!=OP.NOTEQUAL))throw new semanticError("wrong op for bool",it.pos);
          if(it.lson.is_left_val && it.rson.is_left_val)it.is_left_val = true;
     }
@@ -166,34 +181,30 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(ConExNode it) {
+        if(it.type_name.equals("this")){
+            if(currentScope.is_cls==null)throw new semanticError("this is out",it.pos);
+            it.type = currentScope.is_cls;
+            return;
+        }
         it.type = gScope.getClsTypeFromName(it.type_name,it.pos);
     }
 
     @Override
     public void visit(FunExNode it) {
         it.exp.accept(this);
-        FunType fun;
-        if(currentScope.is_cls!=null){//in cls
-            fun =currentScope.is_cls.fun.get(it.idn);
-            if(fun==null) fun = gScope.getFunTypeFromName(it.idn,it.pos);
-        }
-        else{
-            fun = gScope.getFunTypeFromName(it.idn,it.pos);
-        }
+        FunType fun = it.exp.fun_type;
+        if(fun==null)throw new semanticError("wrong function name",it.pos);
         it.calllist.forEach(i-> i.accept(this));
-        if(it.calllist.isEmpty() && !fun.calllist.isEmpty()||!it.calllist.isEmpty() && fun.calllist.isEmpty())throw new semanticError("function call list empty and not empty",it.pos);
-        else if(!it.calllist.isEmpty() && !fun.calllist.isEmpty()){
             if(it.calllist.size()!=fun.calllist.size())throw new semanticError("size unmatch in function call list",it.pos);
             for(int i = 0; i < fun.calllist.size(); ++i){
-                if(!it.calllist.get(i).type.equals(fun.calllist.get(i).type))throw new semanticError("type unmatch in function call list",it.pos);
-            }
+                if(!type_equal(it.calllist.get(i).type,fun.calllist.get(i).type))throw new semanticError("type unmatch in function call list",it.pos);
         }
     }
 
     @Override
     public void visit(MemExNode it) {
        it.target.accept(this);
-       it.type = it.target.type;
+//       it.type = it.target.type;
        int i = 0;
        for(;i < it.type.var.size(); ++i){
            if(it.member.equals(it.type.var.get(i).idn)){
@@ -209,15 +220,22 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(NewExNode it) {
-         if(currentScope.getVarType(it.idn,true)==null || currentScope.getVarType(it.idn,true).dim != it.dim)throw  new semanticError("can't new",it.pos);
-         if(it.err_array)throw new semanticError("wrong array new",it.pos);
-         it.type = currentScope.getVarType(it.idn,true);
+        if(it.err_array)throw new semanticError("array new wrong index",it.pos);
+        ClsType c = new ClsType(it.type_name);
+        c.dim = it.dim;
+        it.type = c;
+//         if(currentScope.getVarType(it.idn,true)==null || currentScope.getVarType(it.idn,true).dim != it.dim)throw  new semanticError("can't new",it.pos);
+//         if(it.err_array)throw new semanticError("wrong array new",it.pos);
+//         it.type = currentScope.getVarType(it.idn,true);
     }
 
     @Override
     public void visit(ArrExNode it) {//dim 在node中维护
-        it.type = currentScope.getVarType(it.idn,true);
-        if(it.type == null || it.type.dim < it.dim)throw new semanticError("wrong array exp",it.pos);
+        it.target.accept(this);
+        it.type = it.target.type;
+        it.type.dim--;
+        it.idx.accept(this);
+//        if(it.type == null || it.type.dim < it.dim)throw new semanticError("wrong array exp",it.pos);
     }
 
     @Override

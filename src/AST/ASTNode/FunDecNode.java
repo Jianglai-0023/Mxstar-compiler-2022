@@ -16,7 +16,7 @@ public class FunDecNode extends StmtNode {
     public String re_type_name;
     public int dim = 0;
     public ClsType return_type;
-    public ArrayList<VarDef> para;
+    public ArrayList<VarDef> para = new ArrayList<>();
 
     public FunDecNode(position pos) {
         super (pos);
