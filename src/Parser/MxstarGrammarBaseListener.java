@@ -40,6 +40,18 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDef(MxstarGrammarParser.DefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDef(MxstarGrammarParser.DefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunctionParametersList(MxstarGrammarParser.FunctionParametersListContext ctx) { }
 	/**
 	 * {@inheritDoc}

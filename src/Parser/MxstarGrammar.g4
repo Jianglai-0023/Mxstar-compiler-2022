@@ -4,9 +4,12 @@ options {
 }
 //------------parser---------//
 //stmt : expr;
-program:(declarationStatement|classDeclaration|functionDeclaration)* mainFn (declarationStatement|classDeclaration|functionDeclaration)* EOF;
+program:def* EOF;
 
 mainFn:Int 'main' LeftParen RightParen compoundStatement;
+
+def:(mainFn|declarationStatement|classDeclaration|functionDeclaration);
+
 //-----------Func-----------//
 functionParametersList:
                       theTypeName Identifier (',' theTypeName Identifier )*;

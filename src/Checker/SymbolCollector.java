@@ -67,16 +67,24 @@ public class SymbolCollector implements ASTVisitor {
     }
     @Override
     public void visit(RootNode it) {
-           it.cls.forEach(p->p.accept(this));
+           for(int i = 0; i < it.sequent.size(); ++i){
+               if(it.sequent.get(i).is_cls_dec)
+                   it.sequent.get(i).accept(this);
+           }
            first_class_look = true;
-           it.cls.forEach(p->p.accept(this));
-           it.funs.forEach(p->p.accept(this));
-//           it.decs.forEach(p->p.accept(this));
+        for(int i = 0; i < it.sequent.size(); ++i){
+            if(it.sequent.get(i).is_cls_dec)
+                it.sequent.get(i).accept(this);
+        }
+        for(int i = 0; i < it.sequent.size(); ++i){
+            if(it.sequent.get(i).is_func_dec)
+                it.sequent.get(i).accept(this);
+        }
     }
     @Override
     public void visit(DecStmtNode it) {
             for(int j = 0; j < it.var.size(); ++j){
-                ClsType dec= gScope.getClsTypeFromName(it.var.get(j).type,it.var.get(j).pos);
+                ClsType dec= new ClsType(gScope.getClsTypeFromName(it.var.get(j).type,it.var.get(j).pos));
                 gScope.is_cls.var.put(it.var.get(j).idn,dec);
             }
     }
@@ -88,7 +96,7 @@ public class SymbolCollector implements ASTVisitor {
             gScope.addclsType(it.idn,t,it.pos);
         }
         else {
-            ClsType my = gScope.getClsTypeFromName(it.idn,it.pos);
+            ClsType my = new ClsType(gScope.getClsTypeFromName(it.idn,it.pos));
             gScope.is_cls = my;
             for(int i = 0; i < it.funs.size(); ++i){
                 it.funs.get(i).accept(this);
@@ -101,7 +109,7 @@ public class SymbolCollector implements ASTVisitor {
     public void visit(FunDecNode it) {
          FunType t = new FunType(gScope.getClsTypeFromName(it.re_type_name,it.pos));
          for(int i = 0; i < it.para.size(); ++i){
-             ClsType pa = gScope.getClsTypeFromName(it.para.get(i).type,it.pos);
+             ClsType pa = new ClsType(gScope.getClsTypeFromName(it.para.get(i).type,it.pos));
              pa.dim = it.para.get(i).dim;//数组
              t.calllist.add(new ClsVarType(pa,it.para.get(i).idn));
          }

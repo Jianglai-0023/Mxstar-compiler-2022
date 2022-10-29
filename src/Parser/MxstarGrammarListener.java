@@ -28,6 +28,16 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 */
 	void exitMainFn(MxstarGrammarParser.MainFnContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#def}.
+	 * @param ctx the parse tree
+	 */
+	void enterDef(MxstarGrammarParser.DefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#def}.
+	 * @param ctx the parse tree
+	 */
+	void exitDef(MxstarGrammarParser.DefContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#functionParametersList}.
 	 * @param ctx the parse tree
 	 */

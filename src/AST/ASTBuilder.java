@@ -53,20 +53,19 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     //todo Type
 
     @Override public ASTNode visitProgram(MxstarGrammarParser.ProgramContext ctx){
-        RootNode root = new RootNode(new position(ctx),(FnRootNode)visit(ctx.mainFn()));
-        if(ctx.declarationStatement()!=null){
-            for(ParserRuleContext stmt: ctx.declarationStatement()){
-                root.decs.add((DecStmtNode) visit(stmt));
+        RootNode root= new RootNode(new position(ctx));
+        for(int i = 0; i < ctx.def().size(); ++i){
+            if(ctx.def(i).mainFn()!=null){
+                root.sequent.add(visit(ctx.def(i).mainFn()));
             }
-        }
-        if(ctx.classDeclaration()!=null){
-            for(ParserRuleContext stmt:ctx.classDeclaration()){
-                root.cls.add((ClsDecNode) visit(stmt));
+            else if(ctx.def(i).functionDeclaration()!=null){
+                root.sequent.add(visit(ctx.def(i).functionDeclaration()));
             }
-        }
-        if(ctx.functionDeclaration()!=null){
-            for(ParserRuleContext stmt:ctx.functionDeclaration()){
-                root.funs.add((FunDecNode) visit(stmt));
+            else if(ctx.def(i).declarationStatement()!=null){
+                root.sequent.add(visit(ctx.def(i).declarationStatement()));
+            }
+            else if(ctx.def(i).classDeclaration()!=null){
+                root.sequent.add(visit(ctx.def(i).classDeclaration()));
             }
         }
         return root;
@@ -74,6 +73,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
 
     @Override public ASTNode visitClassDeclaration(MxstarGrammarParser.ClassDeclarationContext ctx){
         ClsDecNode node = new ClsDecNode(new position(ctx));
+        node.is_cls_dec = true;
         node.idn = ctx.Identifier().getText();
         if(ctx.declarationStatement()!=null){
             for(ParserRuleContext stmt: ctx.declarationStatement())node.decs.add((DecStmtNode) visit(stmt));
@@ -96,6 +96,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
 
     @Override public ASTNode visitFunctionDeclaration(MxstarGrammarParser.FunctionDeclarationContext ctx){
         FunDecNode node = new FunDecNode(new position(ctx));
+        node.is_func_dec = true;
         node.stmt = (ComStmtNode)visit(ctx.compoundStatement());
         if(ctx.theTypeName()==null)node.re_type_name = "void";
         else{
@@ -115,7 +116,9 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     }
 
     @Override public ASTNode visitMainFn(MxstarGrammarParser.MainFnContext ctx){
-        return new FnRootNode(new position(ctx),(ComStmtNode)visit(ctx.compoundStatement()));
+        FnRootNode root =new FnRootNode(new position(ctx),(ComStmtNode)visit(ctx.compoundStatement()));
+        root.is_main = true;
+        return root;
     }
 
     @Override public ASTNode visitCompoundStatement(MxstarGrammarParser.CompoundStatementContext ctx){
@@ -130,8 +133,10 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
 
     @Override public ASTNode visitDeclarationStatement(MxstarGrammarParser.DeclarationStatementContext ctx){
           DecStmtNode stmt = new DecStmtNode(new position(ctx));
+          stmt.is_var_dec = true;
           if(ctx.primaryDeclaration()!=null){
               stmt.dim =  get_dim(ctx.primaryDeclaration().theTypeName().getText());
+//              System.out.println(stmt.dim);
               stmt.type_name = get_type(ctx.primaryDeclaration().theTypeName());
               if(ctx.primaryDeclaration().expression()!=null){
                   for(ParserRuleContext exps:ctx.primaryDeclaration().expression())
@@ -366,6 +371,8 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
       } else if (ctx.LeftBracket() != null) {//array
           ExprNode pri = (ExprNode) visit(ctx.primaryExpression());
           int dim = pri.dim - 1;
+//          System.out.println("QWQ");
+//          System.out.println(dim);
           return new ArrExNode(new position(ctx),pri,(ExprNode)visit(ctx.expression()),dim);
       }
       else{//lambda

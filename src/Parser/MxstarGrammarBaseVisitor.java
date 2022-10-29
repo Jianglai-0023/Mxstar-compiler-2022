@@ -31,6 +31,13 @@ public class MxstarGrammarBaseVisitor<T> extends AbstractParseTreeVisitor<T> imp
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitDef(MxstarGrammarParser.DefContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitFunctionParametersList(MxstarGrammarParser.FunctionParametersListContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

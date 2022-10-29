@@ -13,5 +13,11 @@ public class ClsType extends Type{
         idn = idn_;
         fun = new HashMap<>();
         var = new HashMap<>();
-    }
+        }
+        public ClsType(ClsType other){
+        idn = other.idn;
+        fun = other.fun;
+        var = other.var;
+        dim = other.dim;
+        }
 }

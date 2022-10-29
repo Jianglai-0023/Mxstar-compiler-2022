@@ -8,19 +8,17 @@ import java.util.ArrayList;
 
 public class RootNode extends ASTNode {
 //    public position pos;
+    public ArrayList<ASTNode> sequent = new ArrayList<>();
     public FnRootNode fn;
 
-    public ArrayList<DecStmtNode> decs;
 
-    public ArrayList<FunDecNode> funs;
+//    public ArrayList<DecStmtNode> decs;
 
-    public ArrayList<ClsDecNode> cls;
-    public RootNode(position pos,FnRootNode fn_) {
+//    public ArrayList<FunDecNode> funs;
+
+//    public ArrayList<ClsDecNode> cls;
+    public RootNode(position pos) {
          super (pos);
-         this.fn = fn_;
-         decs = new ArrayList<>();
-         funs = new ArrayList<>();
-         cls = new ArrayList<>();
     }
 
 //    abstract public void accept(ASTVisitor visitor);

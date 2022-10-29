@@ -23,6 +23,12 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMainFn(MxstarGrammarParser.MainFnContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#def}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDef(MxstarGrammarParser.DefContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#functionParametersList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
