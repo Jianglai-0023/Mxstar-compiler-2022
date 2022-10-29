@@ -74,6 +74,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
 
     @Override public ASTNode visitClassDeclaration(MxstarGrammarParser.ClassDeclarationContext ctx){
         ClsDecNode node = new ClsDecNode(new position(ctx));
+        node.idn = ctx.Identifier().getText();
         if(ctx.declarationStatement()!=null){
             for(ParserRuleContext stmt: ctx.declarationStatement())node.decs.add((DecStmtNode) visit(stmt));
         }
@@ -104,7 +105,10 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
         node.idn = ctx.Identifier().getText();
         if(ctx.functionParametersList()!=null){
             for(int i = 0; i < ctx.functionParametersList().Identifier().size(); i++){
-                node.para.add(new VarDef(get_type(ctx.functionParametersList().theTypeName(i)),ctx.functionParametersList().Identifier(i).getText(),new position(ctx.functionParametersList().Identifier(i))));
+                int dim = get_dim(ctx.functionParametersList().theTypeName(i).getText());
+                String type_name = get_type(ctx.functionParametersList().theTypeName(i));
+                String idn = ctx.functionParametersList().Identifier(i).getText();
+                node.para.add(new VarDef(type_name,idn,new position(ctx),dim));
             }
         }
         return node;
@@ -130,9 +134,10 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
               stmt.dim =  get_dim(ctx.primaryDeclaration().theTypeName().getText());
               stmt.type_name = get_type(ctx.primaryDeclaration().theTypeName());
               if(ctx.primaryDeclaration().expression()!=null){
-                  for(ParserRuleContext exps:ctx.primaryDeclaration().expression())stmt.exprs.add((ExprNode) visit(exps));
+                  for(ParserRuleContext exps:ctx.primaryDeclaration().expression())
+                      stmt.exprs.add((ExprNode) visit(exps));
               }
-              ctx.primaryDeclaration().Identifier().forEach(p->stmt.var.add(new VarDef(stmt.type_name,p.getText(),new position(p))));
+              ctx.primaryDeclaration().Identifier().forEach(p->stmt.var.add(new VarDef(stmt.type_name,p.getText(),new position(p),stmt.dim)));
           }
      return stmt;
     }
@@ -343,11 +348,11 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
           return visit(ctx.constantExpression());
 //          return new ConExNode(new position(ctx),"constant");
       }
-      else if(ctx.Identifier()!=null){
+      else if(ctx.Identifier()!=null && ctx.Dot()==null){
           return new VarDefNode(new position(ctx),ctx.Identifier().getText(),0);
       }
-      else if(ctx.LeftParen()!=null && ctx.expression()!=null)return visit(ctx.expression());
-      else if(ctx.functionCallList()!=null||ctx.primaryExpression()!=null && ctx.LeftParen()!=null){
+      else if(ctx.LeftParen()!=null && ctx.expression()!=null)return visit(ctx.expression());//(expression)
+      else if(ctx.primaryExpression()!=null && ctx.LeftParen()!=null){//function
           FunExNode node = new FunExNode(new position(ctx));
           node.exp = (ExprNode) visit(ctx.primaryExpression());
           if(ctx.functionCallList()!=null)ctx.functionCallList().expression().forEach(it->node.calllist.add((ExprNode)visit(it)));

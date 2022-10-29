@@ -1,10 +1,7 @@
 package AST.ASTNode;
 
 import AST.ASTVisitor;
-import Util.VarDef;
-import Util.position;
-import Util.Type;
-import Util.ClsType;
+import Util.*;
 
 import java.util.ArrayList;
 
@@ -12,6 +9,7 @@ import java.util.ArrayList;
 public class FunDecNode extends StmtNode {
 
     public ComStmtNode stmt;
+    public FunType fun_type;//symbolcollector之后存functype
     public String idn;
     public String re_type_name;
     public int dim = 0;

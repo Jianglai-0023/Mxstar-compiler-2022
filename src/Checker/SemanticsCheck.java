@@ -56,18 +56,17 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(DecStmtNode it) {
-        if(currentScope.is_cls==null||currentScope.is_func!=null){//不是class中的or 是函数中的
             ClsType clst = gScope.getClsTypeFromName(it.type_name,it.pos);
             if(clst==null)throw new semanticError("dec class not exists",it.pos);
             clst.dim = it.dim;
             it.type = clst;
-        }
        for(VarDef def : it.var){
            currentScope.defineVariable(def.idn,it.type,it.pos);
        }
        for(ExprNode ex:it.exprs){
            ex.accept(this);
-           if(!type_equal(ex.type,it.type))throw new semanticError("Semantic Error: DecStmt unmatch type",it.pos);
+           if(!ex.type.idn.equals("null")&&!type_equal(ex.type,it.type))
+               throw new semanticError("Semantic Error: DecStmt unmatch type",it.pos);
        }
     }
 
@@ -123,26 +122,17 @@ public class SemanticsCheck implements ASTVisitor {
     @Override
     public void visit(FunDecNode it) {//check return type
         currentScope = new Scope(currentScope);
-        if(currentScope.is_cls==null){
-            currentScope.is_func = gScope.getFunTypeFromName(it.idn,it.pos);
-            it.stmt.accept(this);
-            currentScope = currentScope.parentScope();
-        }
-        else{
-//            FunType fun = new FunType(it.re_type);
-            it.para.forEach(i->currentScope.defineVariable(i.idn,gScope.getClsTypeFromName(i.type,it.pos),it.pos));
-//            currentScope.is_cls.fun.put(it.idn,fun);
-            currentScope.is_func = currentScope.is_cls.fun.get(it.idn);
-            it.stmt.accept(this);
-            currentScope = currentScope.parentScope();
-        }
+        currentScope.is_func = it.fun_type;//当前的function type
+        it.fun_type.calllist.forEach(i->currentScope.defineVariable(i.idn,i.type,it.pos));//定义新的变量进入scope
+        it.stmt.accept(this);
+        currentScope = currentScope.parentScope();
     }
 
     @Override
     public void visit(ClsstruNode it) {
         currentScope = new Scope(currentScope);
         currentScope.is_constru = true;
-        if(!it.idn.equals(currentScope.is_cls.idn))throw new semanticError("wrong construct name",it.pos);
+        if(!it.idn.equals(currentScope.is_in_cls().idn))throw new semanticError("wrong construct name",it.pos);//todo find class in Scope
         it.stmt.accept(this);
         currentScope = currentScope.parentScope();
     }
@@ -154,7 +144,7 @@ public class SemanticsCheck implements ASTVisitor {
 
         if(!it.leftson.is_left_val)throw new semanticError("assign not left val",it.pos);
         if(!it.leftson.type.equals(it.rightson.type))throw new semanticError("unmatch assn type",it.pos);
-        if(it.leftson.type.equals("this"))throw new semanticError("this on left",it.pos);
+        if(it.leftson.type.equals(new ClsType("this")))throw new semanticError("this on left",it.pos);
         if(it.leftson.is_constant)throw new semanticError("constant on left",it.pos);
     }
 
@@ -182,8 +172,8 @@ public class SemanticsCheck implements ASTVisitor {
     @Override
     public void visit(ConExNode it) {
         if(it.type_name.equals("this")){
-            if(currentScope.is_cls==null)throw new semanticError("this is out",it.pos);
-            it.type = currentScope.is_cls;
+            if(currentScope.is_in_cls()==null)throw new semanticError("this is out",it.pos);
+            it.type = currentScope.is_in_cls();
             return;
         }
         it.type = gScope.getClsTypeFromName(it.type_name,it.pos);
@@ -193,6 +183,7 @@ public class SemanticsCheck implements ASTVisitor {
     public void visit(FunExNode it) {
         it.exp.accept(this);
         FunType fun = it.exp.fun_type;
+        it.type = it.exp.type;
         if(fun==null)throw new semanticError("wrong function name",it.pos);
         it.calllist.forEach(i-> i.accept(this));
             if(it.calllist.size()!=fun.calllist.size())throw new semanticError("size unmatch in function call list",it.pos);
@@ -206,16 +197,23 @@ public class SemanticsCheck implements ASTVisitor {
        it.target.accept(this);
 //       it.type = it.target.type;
        int i = 0;
-       for(;i < it.type.var.size(); ++i){
-           if(it.member.equals(it.type.var.get(i).idn)){
-               it.type = it.type.var.get(i).type;
-               break;
-           }
+       if(it.target.type.var.containsKey(it.member))it.type = it.target.type.var.get(it.member);//取对象为变量时的形式
+        else if (!it.target.type.fun.containsKey(it.member))throw new semanticError("no member visit",it.pos);
+        else{
+           it.fun_type = it.target.type.fun.get(it.member);
+           it.type = it.fun_type.return_type;
        }
-       if(i == it.type.var.size()){
-           if(it.type.fun.get(it.member)==null)throw new semanticError("no member visit", it.pos);
-           it.type = it.type.fun.get(it.member).return_type;
-       }
+//       for(;i < it.target.type.var.size(); ++i){
+//           if(it.member.equals(it.type.var.get(i).idn)){
+//               it.type = it.type.var.get(i).type;
+//               break;
+//           }
+//       }
+//       if(i == it.target.type.var.size()){
+//           if(it.target.type.fun.get(it.member)==null)throw new semanticError("no member visit", it.pos);
+//           it.type = it.target.type.fun.get(it.member).return_type;
+//           it.fun_type = it.target.type.fun.get(it.member);
+//       }
     }
 
     @Override
@@ -264,5 +262,8 @@ public class SemanticsCheck implements ASTVisitor {
          if(it.exp!=null)it.exp.accept(this);
          if(it.exp==null && it.is_return)it.re_type =gScope.getClsTypeFromName("void",it.pos);
          else if(it.is_return)it.re_type = it.exp.type;
+         FunType f = currentScope.is_in_fun();
+         if(f == null)throw new semanticError("return out of function",it.pos);
+         if(!type_equal(f.return_type,it.re_type))throw new semanticError("unmatch return type",it.pos);
     }
 }

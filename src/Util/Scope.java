@@ -19,11 +19,11 @@ public class Scope {
         members = new HashMap<>();
         this.parentScope = parentScope;
 //
-        if(parentScope!=null){
-            this.is_constru = parentScope.is_constru;
-            this.is_func = parentScope.is_func;
-            this.is_cls = parentScope.is_cls;
-        }
+//        if(parentScope!=null){
+//            this.is_constru = parentScope.is_constru;
+//            this.is_func = parentScope.is_func;
+//            this.is_cls = parentScope.is_cls;
+//        }
     }
 
     public Scope parentScope() {
@@ -44,9 +44,18 @@ public class Scope {
     }
     public ClsType getVarType(String name, boolean lookUpon) {
         if (members.containsKey(name)) return members.get(name);
+        else if(is_cls!=null && is_cls.var.containsKey(name))return is_cls.var.get(name);
         else if (parentScope != null && lookUpon)
             return parentScope.getVarType(name, true);
         return null;
+    }
+    public ClsType is_in_cls(){
+        if(is_cls==null && parentScope!=null)return parentScope.is_in_cls();
+        return is_cls;
+    }
+    public FunType is_in_fun(){
+        if(is_func==null && parentScope!=null)return parentScope.is_in_fun();
+        return is_func;
     }
 
 }

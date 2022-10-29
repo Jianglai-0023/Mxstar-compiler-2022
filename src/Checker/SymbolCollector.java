@@ -77,13 +77,14 @@ public class SymbolCollector implements ASTVisitor {
     public void visit(DecStmtNode it) {
             for(int j = 0; j < it.var.size(); ++j){
                 ClsType dec= gScope.getClsTypeFromName(it.var.get(j).type,it.var.get(j).pos);
-                gScope.is_cls.var.add(new ClsVarType(dec,it.var.get(j).idn));
+                gScope.is_cls.var.put(it.var.get(j).idn,dec);
             }
     }
     @Override
     public void visit(ClsDecNode it) {
         if(!first_class_look) {
             ClsType t = new ClsType(it.idn);
+//            System.out.println(it.idn);
             gScope.addclsType(it.idn,t,it.pos);
         }
         else {
@@ -101,10 +102,12 @@ public class SymbolCollector implements ASTVisitor {
          FunType t = new FunType(gScope.getClsTypeFromName(it.re_type_name,it.pos));
          for(int i = 0; i < it.para.size(); ++i){
              ClsType pa = gScope.getClsTypeFromName(it.para.get(i).type,it.pos);
+             pa.dim = it.para.get(i).dim;//数组
              t.calllist.add(new ClsVarType(pa,it.para.get(i).idn));
          }
          if(gScope.is_cls==null) gScope.addfunType(it.idn,t,it.pos);
          else gScope.is_cls.fun.put(it.idn,t);
+         it.fun_type =t;
     }
     @Override
     public void visit(FnRootNode it) {}
