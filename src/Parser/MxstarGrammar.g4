@@ -134,7 +134,7 @@ statement:
        |compoundStatement;
 
 declarationStatement:
-        primaryDeclaration? Semi;
+        primaryDeclaration Semi;
 
 expressionStatement:expression? Semi;
 

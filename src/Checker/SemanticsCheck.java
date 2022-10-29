@@ -90,6 +90,7 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(ExprStmtNode it) {
+        if(it.exp==null)return;
          it.exp.accept(this);
     }
 
@@ -121,8 +122,9 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(ConNode it) {
-       if(!it.type.equals("bool"))throw new semanticError("Semantic Error: condition is not bool",it.pos);
-       it.exp.accept(this);
+        it.exp.accept(this);
+        it.type = it.exp.type;
+       if(!type_equal(it.type,new ClsType("bool")))throw new semanticError("condition is not bool",it.pos);
     }
 
     @Override
@@ -215,6 +217,9 @@ public class SemanticsCheck implements ASTVisitor {
             it.type = new ClsType(currentScope.is_in_cls());
             return;
         }
+//        else it.type = new ClsType(it.type_name);
+//        else if(it.type_name.equals("true")||it.type_name.equals("false"))it.type= new ClsType("bool");
+//        else if(it.type_name.equals("string"))
         it.type = new ClsType(gScope.getClsTypeFromName(it.type_name,it.pos));
     }
 
@@ -310,9 +315,12 @@ public class SemanticsCheck implements ASTVisitor {
     public void visit(JpStmtNode it) {
          if(it.exp!=null)it.exp.accept(this);
          if(it.exp==null && it.is_return)it.re_type =new ClsType(gScope.getClsTypeFromName("void",it.pos));
-         else if(it.is_return)it.re_type = it.exp.type;
-         FunType f = currentScope.is_in_fun();
-         if(f == null)throw new semanticError("return out of function",it.pos);
-         if(!type_equal(f.return_type,it.re_type))throw new semanticError("unmatch return type",it.pos);
+         else if(it.is_return){
+             it.re_type = it.exp.type;
+             FunType f = currentScope.is_in_fun();
+             if(f == null)throw new semanticError("return out of function",it.pos);
+             if(!type_equal(f.return_type,it.re_type))throw new semanticError("unmatch return type",it.pos);
+         }
+
     }
 }
