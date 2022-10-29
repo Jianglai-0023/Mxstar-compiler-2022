@@ -27,6 +27,7 @@ public class SemanticsCheck implements ASTVisitor {
     @Override
     public void visit(FnRootNode it) {
        currentScope = new Scope(currentScope);
+       currentScope.is_func = new FunType(new ClsType("int"));
         it.stmts.accept(this);
         currentScope = currentScope.parentScope();
     }
@@ -41,14 +42,17 @@ public class SemanticsCheck implements ASTVisitor {
     @Override
     public void visit(VarDefNode it) {
         it.type = currentScope.getVarType(it.idn,true);
-        if(it.type==null){
-            if(currentScope.is_cls!=null){
-                it.fun_type=currentScope.is_cls.fun.get(it.idn);
+        if(it.type==null){//可能是函数
+            if(currentScope.is_in_cls()==null){
+                it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
+            }
+            else{
+                it.fun_type=currentScope.is_in_cls().fun.get(it.idn);
                 if(it.fun_type==null){
                     it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
                 }
             }
-            else it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
+            if(it.fun_type==null)throw new semanticError("undefined var type",it.pos);
             return;
         }
         it.is_left_val = true;

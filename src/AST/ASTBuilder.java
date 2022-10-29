@@ -319,28 +319,28 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     }
 
     @Override public ASTNode visitSingleExpression(MxstarGrammarParser.SingleExpressionContext ctx){
-        ExprNode node;
         OP str;
        if(ctx.PlusPlus()!=null)str = OP.PLUSPLUS;
        else if(ctx.MinusMinus()!= null)str = OP.MINUSMINUS;
        else {
-           node = (ExprNode)visit(ctx.selfExpression());
-           return node;
+           return (ExprNode)visit(ctx.selfExpression());
+
        }
-       node = new SinExNode(new position(ctx),str);
+       SinExNode node = new SinExNode(new position(ctx),str);
+       node.exp = (ExprNode) visit((ctx.selfExpression()));
        return node;
     }
 
     @Override public ASTNode visitSelfExpression(MxstarGrammarParser.SelfExpressionContext ctx){
-      ExprNode node;
       OP str;
-      if(ctx.PlusPlus()==null && ctx.MinusMinus()==null)node = (ExprNode) visit(ctx.primaryExpression());
+      if(ctx.PlusPlus()==null && ctx.MinusMinus()==null)return visit(ctx.primaryExpression());
       else{
           if(ctx.PlusPlus()==null)str = OP.MINUSMINUS;
           else str = OP.PLUSPLUS;
-          node = new SinExNode(new position(ctx),str);
+          SinExNode node = new SinExNode(new position(ctx),str);
+          node.exp = (ExprNode) visit(ctx.primaryExpression());
+          return node;
       }
-      return node;
     }
 
     @Override public ASTNode visitPrimaryExpression(MxstarGrammarParser.PrimaryExpressionContext ctx){
