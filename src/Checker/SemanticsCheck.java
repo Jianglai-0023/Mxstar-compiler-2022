@@ -162,6 +162,9 @@ public class SemanticsCheck implements ASTVisitor {
          else if(!type_equal(it.lson.type,it.rson.type))throw new semanticError("unmatch type in BI",it.pos);
          if(it.op.compareTo(OP.LESS)>=0&& it.op.compareTo(OP.NOT) <= 0)it.type = gScope.getClsTypeFromName("bool",it.pos);
          else it.type = it.lson.type;
+
+         if(it.op.compareTo(OP.PLUS)>0 && it.op.compareTo(OP.MOD)<=0 && !it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type",it.pos);
+         if(it.op.compareTo(OP.PLUS)==0 && !it.lson.type.idn.equals("string")&&!it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type",it.pos);
          if(it.type.idn.equals("bool")&&(it.op!=OP.EQUALEQUAL&&it.op!=OP.NOTEQUAL))throw new semanticError("wrong op for bool",it.pos);
          if(it.lson.is_left_val && it.rson.is_left_val)it.is_left_val = true;
     }
