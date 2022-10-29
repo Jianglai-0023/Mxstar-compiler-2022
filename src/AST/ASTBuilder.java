@@ -8,6 +8,7 @@ import Util.globalScope;
 import Util.position;
 import org.antlr.v4.runtime.ParserRuleContext;
 import Util.OP;
+
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
@@ -95,7 +96,8 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitFunctionDeclaration(MxstarGrammarParser.FunctionDeclarationContext ctx){
         FunDecNode node = new FunDecNode(new position(ctx));
         node.stmt = (ComStmtNode)visit(ctx.compoundStatement());
-//        node.type = ctx.theTypeName().getText();
+        node.re_type_name = get_type(ctx.theTypeName());
+        node.dim = get_dim(ctx.theTypeName().getText());
         node.idn = ctx.Identifier().getText();
         if(ctx.functionParametersList()!=null){
             for(int i = 0; i < ctx.functionParametersList().Identifier().size(); i++){
@@ -123,11 +125,11 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
           DecStmtNode stmt = new DecStmtNode(new position(ctx));
           if(ctx.primaryDeclaration()!=null){
               stmt.dim =  get_dim(ctx.primaryDeclaration().theTypeName().getText());
-              stmt.type = get_type(ctx.primaryDeclaration().theTypeName());
+              stmt.type_name = get_type(ctx.primaryDeclaration().theTypeName());
               if(ctx.primaryDeclaration().expression()!=null){
                   for(ParserRuleContext exps:ctx.primaryDeclaration().expression())stmt.exprs.add((ExprNode) visit(exps));
               }
-              ctx.primaryDeclaration().Identifier().forEach(p->stmt.idn.add(new VarDef(stmt.type,p.getText(),new position(p))));
+              ctx.primaryDeclaration().Identifier().forEach(p->stmt.var.add(new VarDef(stmt.type_name,p.getText(),new position(p))));
           }
      return stmt;
     }
@@ -335,7 +337,11 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
 
     @Override public ASTNode visitPrimaryExpression(MxstarGrammarParser.PrimaryExpressionContext ctx){
       if(ctx.constantExpression()!=null){
-          return new ConExNode(new position(ctx),"constant");
+          return visit(ctx.constantExpression());
+//          return new ConExNode(new position(ctx),"constant");
+      }
+      else if(ctx.Identifier()!=null){
+          return new VarDefNode(new position(ctx),ctx.Identifier().getText(),0);
       }
       else if(ctx.LeftParen()!=null && ctx.expression()!=null)return visit(ctx.expression());
       else if(ctx.functionCallList()!=null||ctx.primaryExpression()!=null && ctx.LeftParen()!=null){
@@ -348,7 +354,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
           return new MemExNode(new position(ctx),(ExprNode) visit(ctx.primaryExpression()),ctx.Identifier().getText());
       }
       else if(ctx.newExpression()!=null){//new
-          return (NewExNode)visit(ctx.newExpression());
+          return visit(ctx.newExpression());
       } else if (ctx.LeftBracket() != null) {//array
           ExprNode pri = (ExprNode) visit(ctx.primaryExpression());
           int dim = pri.dim + 1;
@@ -361,6 +367,16 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
           ctx.lambdaExpression().functionCallList().expression().forEach(it->node.call_lists.add((ExprNode) visit(it)));//todo parameter_list
           return node;
       }
+    }
+
+    @Override public ASTNode visitConstantExpression(MxstarGrammarParser.ConstantExpressionContext ctx){
+        ConExNode node = new ConExNode(new position(ctx));
+        if(ctx.DIGIT()!=null)node.type_name = "int";
+        else if(ctx.False()!=null||ctx.True()!=null)node.type_name = "bool";
+        else if (ctx.StringLiteral()!=null)node.type_name = "string";
+        else if (ctx.Null()!=null)node.type_name = "null";
+        else if (ctx.This()!=null)node.type_name = "this";
+        return node;
     }
     @Override public ASTNode visitNewExpression(MxstarGrammarParser.NewExpressionContext ctx){
         NewExNode node = new NewExNode(new position(ctx),get_type(ctx.theTypeName()));

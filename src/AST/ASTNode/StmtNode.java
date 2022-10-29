@@ -7,5 +7,5 @@ public abstract class StmtNode extends ASTNode {
     public StmtNode(position pos) {
         super(pos);
     }
-    public Type type = null;
+//    public Type type = null;
 }

@@ -11,6 +11,7 @@ public class ComStmtNode extends ASTNode {
     public ArrayList<StmtNode> stmts;
     public ComStmtNode(position pos) {
         super (pos);
+        stmts = new ArrayList<>();
     }
 
     //    abstract public void accept(ASTVisitor visitor);

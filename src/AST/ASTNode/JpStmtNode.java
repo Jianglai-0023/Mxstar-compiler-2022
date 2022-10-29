@@ -1,6 +1,7 @@
 package AST.ASTNode;
 
 import AST.ASTVisitor;
+import Util.ClsType;
 import Util.position;
 
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 public class JpStmtNode extends StmtNode {
     public ExprNode exp = null;
     public boolean is_return = false;
+
+    public ClsType re_type;
 
     public JpStmtNode(position pos) {
         super (pos);

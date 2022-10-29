@@ -6,15 +6,13 @@ import Util.position;
 import java.util.ArrayList;
 
 
-public class VarDefNode extends StmtNode {
+public class VarDefNode extends ExprNode {
     //    public position pos;
-    public ArrayList<StmtNode> stmts;
-    public String type;
-    public int dim;
+    public String idn;
 
-    public VarDefNode(position pos,String type_, int dim_) {
+    public VarDefNode(position pos,String idn_, int dim_) {
         super (pos);
-       type = type_;
+       idn = idn_;
        dim=dim_;
     }
 

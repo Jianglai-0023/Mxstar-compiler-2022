@@ -15,6 +15,9 @@ public class ClsDecNode extends StmtNode {
 
     public ClsDecNode(position pos) {
         super (pos);
+        decs = new ArrayList<>();
+        constructs = new ArrayList<>();
+        funs = new ArrayList<>();
     }
 
     //    abstract public void accept(ASTVisitor visitor);

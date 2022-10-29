@@ -9,6 +9,8 @@ import com.sun.source.tree.VariableTree;
 
 public class SymbolCollector implements ASTVisitor {
     private globalScope gScope;
+    private boolean first_class_look;
+    private ClsType now_class = null;
     public SymbolCollector(globalScope gScope) {
         this.gScope = gScope;
 
@@ -24,14 +26,17 @@ public class SymbolCollector implements ASTVisitor {
         ClsType String = new ClsType("string");
         String.fun.put("length",new FunType(Int));
         FunType Substring = new FunType(String);
-        Substring.calllist.add(new VarDef("int","left",new position(0,0)));
-        Substring.calllist.add(new VarDef("int","right",new position(0,0)));
+        Substring.calllist.add(new ClsVarType(Int,"left"));
+        Substring.calllist.add(new ClsVarType(Int,"right"));
         String.fun.put("substring",Substring);
         String.fun.put("parseInt",new FunType(Int));
         FunType Ord = new FunType(Int);
-        Ord.calllist.add(new VarDef("int","pos",new position(0,0)));
+        Ord.calllist.add(new ClsVarType(Int,"pos"));
         String.fun.put("order",Ord);
         this.gScope.addclsType("string",String,new position(0,0));
+
+        ClsType Null = new ClsType("null");
+        this.gScope.addclsType("null",Null,new position(0,0));
 
 //        ClsType Array = new ClsType("array");
 //        this.gScope.addclsType("array",Array,new position(0,0));
@@ -39,27 +44,42 @@ public class SymbolCollector implements ASTVisitor {
     @Override
     public void visit(RootNode it) {
            it.cls.forEach(p->p.accept(this));
+           first_class_look = true;
+           it.cls.forEach(p->p.accept(this));
            it.funs.forEach(p->p.accept(this));
 //           it.decs.forEach(p->p.accept(this));
     }
     @Override
     public void visit(DecStmtNode it) {
-         it.idn.forEach(p->gScope.defineVariable(p.idn,gScope.getClsTypeFromName(p.type,it.pos),it.pos));
+            for(int j = 0; j < it.var.size(); ++j){
+                ClsType dec= gScope.getClsTypeFromName(it.var.get(j).type,it.var.get(j).pos);
+                now_class.var.add(new ClsVarType(dec,it.var.get(j).idn));
+            }
     }
     @Override
     public void visit(ClsDecNode it) {
-       ClsType t = new ClsType(it.idn);
-       it.decs.forEach(p-> t.var.addAll(p.idn));
-       for(FunDecNode node: it.funs){
-           FunType ty = new FunType((ClsType) node.type);
-           ty.calllist.addAll(node.para);
-           t.fun.put(node.idn,ty);
-       }
+        if(!first_class_look) {
+            ClsType t = new ClsType(it.idn);
+            gScope.addclsType(it.idn,t,it.pos);
+        }
+        else {
+            ClsType my = gScope.getClsTypeFromName(it.idn,it.pos);
+            for(int i = 0; i < it.funs.size(); ++i){
+                FunType fun = new FunType(gScope.getClsTypeFromName(it.funs.get(i).re_type_name,it.funs.get(i).pos));//不管几维数组都已经被定义了
+                my.fun.put(it.funs.get(i).idn,fun);
+            }
+            now_class = my;
+            it.decs.forEach(p-> p.accept(this));
+        }
     }
     @Override
     public void visit(FunDecNode it) {
-         FunType t = new FunType((ClsType) it.type);
-         t.calllist.addAll(it.para);
+         FunType t = new FunType(gScope.getClsTypeFromName(it.re_type_name,it.pos));
+         for(int i = 0; i < it.para.size(); ++i){
+             ClsType pa = gScope.getClsTypeFromName(it.para.get(i).type,it.pos);
+             t.calllist.add(new ClsVarType(pa,it.para.get(i).idn));
+         }
+         gScope.addfunType(it.idn,t,it.pos);
     }
     @Override
     public void visit(FnRootNode it) {}

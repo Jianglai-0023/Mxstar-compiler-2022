@@ -18,6 +18,9 @@ public class RootNode extends ASTNode {
     public RootNode(position pos,FnRootNode fn_) {
          super (pos);
          this.fn = fn_;
+         decs = new ArrayList<>();
+         funs = new ArrayList<>();
+         cls = new ArrayList<>();
     }
 
 //    abstract public void accept(ASTVisitor visitor);

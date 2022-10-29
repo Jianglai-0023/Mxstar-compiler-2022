@@ -4,9 +4,9 @@ options {
 }
 //------------parser---------//
 //stmt : expr;
-program:(declarationStatement|classDeclaration|functionDeclaration)* mainFn;
+program:(declarationStatement|classDeclaration|functionDeclaration)* mainFn (declarationStatement|classDeclaration|functionDeclaration)* EOF;
 
-mainFn:Int 'Compiler' LeftParen RightParen compoundStatement EOF;
+mainFn:Int 'main' LeftParen RightParen compoundStatement;
 //-----------Func-----------//
 functionParametersList:
                       theTypeName Identifier (',' theTypeName Identifier )*;
@@ -45,10 +45,11 @@ constantExpression:
                   |StringLiteral
                   |Null
                   |This
-                  |Identifier;
+                  ;
 
 primaryExpression:
                  constantExpression
+                 |Identifier
                  |LeftParen expression RightParen
                  |primaryExpression LeftParen functionCallList? RightParen //function
                  |primaryExpression (Dot Identifier)// member
