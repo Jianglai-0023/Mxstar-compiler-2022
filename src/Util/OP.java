@@ -25,8 +25,10 @@ public enum OP{
     OR,
     CARET,
     WAVY,
-    PLUSPLUS,
-    MINUSMINUS,
+    L_PLUSPLUS,
+    L_MINUSMINUS,
+    R_PLUSPLUS,
+    R_MINUSMINUS,
     DOT,
     NONE;
 }

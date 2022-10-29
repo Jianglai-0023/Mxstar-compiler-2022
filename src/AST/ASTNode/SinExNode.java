@@ -9,6 +9,8 @@ public class SinExNode extends ExprNode {
 //    public int dim;
     public ExprNode exp;
 
+
+
     public SinExNode(position pos,OP op_) {
         super(pos);
         op = op_;
