@@ -45,10 +45,7 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(VarDefNode it) {
-        it.type = new ClsType(currentScope.getVarType(it.idn,true));
-//         System.out.println(it.idn);
-//         System.out.println(it.type.dim);
-        if(it.type==null){//可能是函数
+        if(currentScope.getVarType(it.idn,true)==null){//可能是函数
             if(currentScope.is_in_cls()==null){
                 it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
             }
@@ -61,6 +58,7 @@ public class SemanticsCheck implements ASTVisitor {
             if(it.fun_type==null)throw new semanticError("undefined var type",it.pos);
             return;
         }
+        it.type = new ClsType(currentScope.getVarType(it.idn,true));
         it.is_left_val = true;
     }
 
@@ -72,16 +70,16 @@ public class SemanticsCheck implements ASTVisitor {
 //        System.out.println(it.dim);
             clst.dim = it.dim;
             it.type = clst;
-       for(VarDef def : it.var){
-//           System.out.println("()()");
-//           System.out.println(def.idn);
-           currentScope.defineVariable(def.idn,new ClsType(it.type),it.pos);
-       }
        for(ExprNode ex:it.exprs){
            ex.accept(this);
            if(!ex.type.idn.equals("null")&&!type_equal(ex.type,it.type))
                throw new semanticError("Semantic Error: DecStmt unmatch type",it.pos);
        }
+        for(VarDef def : it.var){
+//           System.out.println("()()");
+//           System.out.println(def.idn);
+            currentScope.defineVariable(def.idn,new ClsType(it.type),it.pos);
+        }
     }
 
     @Override
