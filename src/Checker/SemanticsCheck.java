@@ -50,7 +50,7 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(VarDefNode it) {
-        if(currentScope.getVarType(it.idn,false)==null){//可能是函数，寻找顺序必须先将本层的全部找完，才能到下一层
+        if(currentScope.getVarType(it.idn,true)==null){//可能是函数，寻找顺序必须先将本层的全部找完，才能到下一层
             if(currentScope.is_in_cls()==null){
                 it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
             }
