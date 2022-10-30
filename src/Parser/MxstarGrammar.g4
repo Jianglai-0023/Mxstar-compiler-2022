@@ -72,12 +72,17 @@ postExpression:
       (Not|Wavy|Minus|Plus)postExpression;//single
 
 multiplicativeExpression:
-      postExpression((Div|Star|Mod) postExpression)*;//binary
+      postExpression(mulOperator postExpression)*;//binary
+
+mulOperator: (Div|Star|Mod);
 
 additiveExpression:
 	multiplicativeExpression (
-		(Plus | Minus) multiplicativeExpression//single
+		additiveOperator multiplicativeExpression//single
 	)*;
+
+additiveOperator:	Plus | Minus;
+
 
 shiftExpression:
 	additiveExpression (shiftOperator additiveExpression)*;
@@ -85,14 +90,15 @@ shiftExpression:
 shiftOperator: Greater Greater | Less Less;//binary
 
 relationalExpression:
-	shiftExpression (
-		(Less | Greater | LessEqual | GreaterEqual) shiftExpression//bool
-	)*;
+	shiftExpression ( relationaloperator shiftExpression)*;
+
+relationaloperator:(Less | Greater | LessEqual | GreaterEqual) ;
 
 equalityExpression:
     	relationalExpression (
-    		(EqualEqual | NotEqual) relationalExpression//bool
+    		equalAndNotEqualoperator relationalExpression//bool
     	)*;
+equalAndNotEqualoperator:EqualEqual | NotEqual;
 
 andExpression: equalityExpression (And equalityExpression)*;
 

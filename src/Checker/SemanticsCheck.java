@@ -114,8 +114,8 @@ public class SemanticsCheck implements ASTVisitor {
             currentScope = new Scope(currentScope);
             if(it.con!=null)it.con.accept(this);
             if(it.ini_stmt!=null)it.ini_stmt.accept(this);
-            it.stmt.accept(this);
             if(it.exp!=null)it.exp.accept(this);
+            it.stmt.accept(this);
             currentScope = currentScope.parentScope();
         }
     }
@@ -186,14 +186,15 @@ public class SemanticsCheck implements ASTVisitor {
          }
          else if(!type_equal(it.lson.type,it.rson.type))throw new semanticError("unmatch type in BI",it.pos);
          //判断type
-         if(it.op.compareTo(OP.LESS)>=0&& it.op.compareTo(OP.NOT) <= 0)it.type = new ClsType(gScope.getClsTypeFromName("bool",it.pos));
+         if(it.op.compareTo(OP.LESS)>=0&& it.op.compareTo(OP.NOT) <= 0)
+             it.type = new ClsType("bool");
          else it.type = it.lson.type;
 
          if(it.op.compareTo(OP.PLUS)==0 && !it.lson.type.idn.equals("string")&&!it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type0",it.pos);
 
          else if(it.op.compareTo(OP.PLUS)>0 && it.op.compareTo(OP.MOD)<=0 && !it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type1",it.pos);
 //         else if(it.op.compareTo(OP.LESS) >= 0 && it.op.compareTo(OP.NOTEQUAL)<=0 && (!it.lson.type.idn.equals("string") && !it.lson.type.idn.equals("int")))throw new semanticError("wrong plus type2",it.pos);
-         else if(it.op.compareTo(OP.ANDAND)>0 && it.op.compareTo(OP.NOT)<=0 && !it.lson.type.idn.equals("bool"))throw new semanticError("wrong plus type3",it.pos);
+         else if(it.op.compareTo(OP.ANDAND)>=0 && it.op.compareTo(OP.NOT)<=0 && !it.lson.type.idn.equals("bool"))throw new semanticError("wrong plus type3",it.pos);
          else if(it.op.compareTo(OP.AND)>=0 && it.op.compareTo(OP.OR)<=0&&!it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type4",it.pos);
 //         else if(it.op.compareTo(OP.EQUALEQUAL) >= 0 && it.op.compareTo(OP.NOTEQUAL)<=0 && (!it.lson.type.idn.equals("string") && !it.lson.type.idn.equals("int")))throw new semanticError("wrong plus type",it.pos)
 
@@ -242,10 +243,16 @@ public class SemanticsCheck implements ASTVisitor {
     public void visit(MemExNode it) {
        it.target.accept(this);
 //       it.type = it.target.type;
+        if(it.target.type.dim!=0 && it.member.equals("size")){
+            it.fun_type = new FunType(new ClsType("int"));
+            it.type = new ClsType("int");
+            return;
+        }
        int i = 0;
        if(it.target.type.var.containsKey(it.member)){
            it.type = it.target.type.var.get(it.member);//取对象为变量时的形式
            it.is_left_val = true;
+
        }
 
         else if (!it.target.type.fun.containsKey(it.member))throw new semanticError("no member visit",it.pos);

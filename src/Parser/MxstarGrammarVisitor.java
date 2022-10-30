@@ -113,11 +113,23 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultiplicativeExpression(MxstarGrammarParser.MultiplicativeExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#mulOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulOperator(MxstarGrammarParser.MulOperatorContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#additiveExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAdditiveExpression(MxstarGrammarParser.AdditiveExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#additiveOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAdditiveOperator(MxstarGrammarParser.AdditiveOperatorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#shiftExpression}.
 	 * @param ctx the parse tree
@@ -137,11 +149,23 @@ public interface MxstarGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRelationalExpression(MxstarGrammarParser.RelationalExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#relationaloperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelationaloperator(MxstarGrammarParser.RelationaloperatorContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitEqualityExpression(MxstarGrammarParser.EqualityExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MxstarGrammarParser#equalAndNotEqualoperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualAndNotEqualoperator(MxstarGrammarParser.EqualAndNotEqualoperatorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarGrammarParser#andExpression}.
 	 * @param ctx the parse tree

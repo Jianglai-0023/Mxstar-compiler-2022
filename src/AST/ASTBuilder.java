@@ -183,7 +183,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
              node.con = (ConNode) visit(ctx.condition());
              node.stmt = (StmtNode) visit(ctx.statement());
          }
-         else{
+         else{//is for
              node.is_while = false;
              node.stmt = (StmtNode) visit(ctx.statement());
              if(ctx.forInitialStatement()!=null){
@@ -262,7 +262,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitEqualityExpression(MxstarGrammarParser.EqualityExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.relationalExpression(0));
         for(int i = 1; i < ctx.relationalExpression().size(); ++i){
-            OP str = (ctx.EqualEqual(i-1)!=null) ? OP.EQUALEQUAL:OP.NOTEQUAL;
+            OP str = (ctx.equalAndNotEqualoperator(i-1).EqualEqual()!=null) ? OP.EQUALEQUAL:OP.NOTEQUAL;
             node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.relationalExpression(i)));
         }
         return node;
@@ -272,10 +272,10 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
         ExprNode node = (ExprNode)visit(ctx.shiftExpression(0));
         for(int i = 1; i < ctx.shiftExpression().size(); ++i){
             OP str = OP.NONE;
-            if(ctx.Greater().size()>i&&ctx.Greater(i-1)!=null)str = OP.GREATER;
-            else if (ctx.Less().size()>i&&ctx.Less(i-1)!=null)str = OP.LESS;
-            else if(ctx.LessEqual().size()>i&&ctx.LessEqual(i-1)!=null)str = OP.LESSEQUAL;
-            else if(ctx.GreaterEqual().size()>i&&ctx.GreaterEqual(i-1)!=null)str = OP.GREATEREQUAL;
+            if(ctx.relationaloperator(i-1).Greater()!=null)str = OP.GREATER;
+            else if (ctx.relationaloperator(i-1).Less()!=null) str = OP.LESS;
+            else if(ctx.relationaloperator(i-1).LessEqual()!=null)str = OP.LESSEQUAL;
+            else if(ctx.relationaloperator(i-1).GreaterEqual()!=null)str = OP.GREATEREQUAL;
             node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.shiftExpression(i)));
         }
         return node;
@@ -292,7 +292,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitAdditiveExpression(MxstarGrammarParser.AdditiveExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.multiplicativeExpression(0));
         for(int i = 1; i < ctx.multiplicativeExpression().size(); ++i){
-            OP str = (ctx.Plus(i-1)!=null) ? OP.PLUS:OP.MINUS;
+            OP str = (ctx.additiveOperator(i-1).Plus()!=null) ? OP.PLUS:OP.MINUS;
             node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.multiplicativeExpression(i)));
         }
         return node;
@@ -301,8 +301,8 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
         ExprNode node = (ExprNode)visit(ctx.postExpression(0));
         for(int i = 1; i < ctx.postExpression().size(); ++i){
             OP str;
-            if(ctx.Div(i-1)!=null)str =OP.DIV;
-            else if(ctx.Mod(i-1)!=null)str = OP.MOD;
+            if(ctx.mulOperator(i-1).Div()!=null)str =OP.DIV;
+            else if(ctx.mulOperator(i-1).Mod()!=null)str = OP.MOD;
             else str = OP.STAR;
             node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.postExpression(i)));
         }

@@ -178,6 +178,16 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 */
 	void exitMultiplicativeExpression(MxstarGrammarParser.MultiplicativeExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#mulOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterMulOperator(MxstarGrammarParser.MulOperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#mulOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitMulOperator(MxstarGrammarParser.MulOperatorContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#additiveExpression}.
 	 * @param ctx the parse tree
 	 */
@@ -187,6 +197,16 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAdditiveExpression(MxstarGrammarParser.AdditiveExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#additiveOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterAdditiveOperator(MxstarGrammarParser.AdditiveOperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#additiveOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitAdditiveOperator(MxstarGrammarParser.AdditiveOperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#shiftExpression}.
 	 * @param ctx the parse tree
@@ -218,6 +238,16 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 */
 	void exitRelationalExpression(MxstarGrammarParser.RelationalExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#relationaloperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterRelationaloperator(MxstarGrammarParser.RelationaloperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#relationaloperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitRelationaloperator(MxstarGrammarParser.RelationaloperatorContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#equalityExpression}.
 	 * @param ctx the parse tree
 	 */
@@ -227,6 +257,16 @@ public interface MxstarGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEqualityExpression(MxstarGrammarParser.EqualityExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarGrammarParser#equalAndNotEqualoperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqualAndNotEqualoperator(MxstarGrammarParser.EqualAndNotEqualoperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarGrammarParser#equalAndNotEqualoperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqualAndNotEqualoperator(MxstarGrammarParser.EqualAndNotEqualoperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarGrammarParser#andExpression}.
 	 * @param ctx the parse tree

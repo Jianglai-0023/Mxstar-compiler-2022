@@ -220,6 +220,18 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMulOperator(MxstarGrammarParser.MulOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMulOperator(MxstarGrammarParser.MulOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAdditiveExpression(MxstarGrammarParser.AdditiveExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -227,6 +239,18 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAdditiveExpression(MxstarGrammarParser.AdditiveExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAdditiveOperator(MxstarGrammarParser.AdditiveOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAdditiveOperator(MxstarGrammarParser.AdditiveOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -268,6 +292,18 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRelationaloperator(MxstarGrammarParser.RelationaloperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRelationaloperator(MxstarGrammarParser.RelationaloperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterEqualityExpression(MxstarGrammarParser.EqualityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -275,6 +311,18 @@ public class MxstarGrammarBaseListener implements MxstarGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEqualityExpression(MxstarGrammarParser.EqualityExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEqualAndNotEqualoperator(MxstarGrammarParser.EqualAndNotEqualoperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEqualAndNotEqualoperator(MxstarGrammarParser.EqualAndNotEqualoperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
