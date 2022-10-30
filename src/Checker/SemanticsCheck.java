@@ -339,9 +339,10 @@ public class SemanticsCheck implements ASTVisitor {
     @Override
     public void visit(LamExNode it) {
         currentScope = new Scope(currentScope);
+        if(it.is_in)currentScope.lookup=false;
         currentScope.is_func = new FunType(0);//empty的函数Scope//todo
         for(int i = 0; i < it.parameters.size(); ++i){
-            ClsType c = gScope.getClsTypeFromName(it.parameters.get(i).idn,it.pos);
+            ClsType c = gScope.getClsTypeFromName(it.parameters.get(i).type,it.pos);
             c.dim = it.parameters.get(i).dim;
             it.para_type.add(new ClsVarType(c,it.parameters.get(i).idn));
             currentScope.defineVariable(it.parameters.get(i).idn,c,it.pos);

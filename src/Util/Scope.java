@@ -20,6 +20,8 @@ public class Scope {
 
     public boolean is_constru = false;
 
+    public boolean lookup = true;
+
     public Scope(Scope parentScope) {
         members = new HashMap<>();
         this.parentScope = parentScope;
@@ -39,20 +41,6 @@ public class Scope {
         if (members.containsKey(idn))
             throw new semanticError("Semantic Error: variable redefine", pos);
         members.put(idn, t);
-    }
-
-    public boolean containsVariable(String name, boolean lookUpon) {
-        if (members.containsKey(name)) return true;
-        else if (parentScope != null && lookUpon)
-            return parentScope.containsVariable(name, true);
-        else return false;
-    }
-    private ClsType getVarType(String name, boolean lookUpon) {
-        if (members.containsKey(name)) return members.get(name);
-        else if(is_cls!=null && is_cls.var.containsKey(name))return is_cls.var.get(name);
-        else if (parentScope != null && lookUpon)
-            return parentScope.getVarType(name, true);
-        return null;
     }
     public ClsType is_in_cls(){
         if(is_cls==null && parentScope!=null)return parentScope.is_in_cls();
@@ -78,12 +66,12 @@ public class Scope {
             }
             else if(is_cls.var.containsKey(name))return new Pair<>(is_cls.var.get(name),null);
 //            else if(members.containsKey(name))return new Pair<>(members.get(name),null);
-            else if(parentScope!=null)return parentScope.find_var_def(name);
+            else if(parentScope!=null&&lookup)return parentScope.find_var_def(name);
             else return new Pair<>(null,null);
         }
         else{
             if(members.containsKey(name))return new Pair<>(members.get(name),null);
-            else if(parentScope!=null)return parentScope.find_var_def(name);
+            else if(parentScope!=null&&lookup)return parentScope.find_var_def(name);
             else return new Pair<>(null,null);
         }
 
