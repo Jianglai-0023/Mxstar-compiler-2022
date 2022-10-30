@@ -7,6 +7,7 @@ public class FunType extends Type{
 //    public String idn;
     public ClsType return_type;
     public String idn;
+    public boolean is_lambda = false;
     public ArrayList<ClsVarType> calllist;
     public FunType(ClsType retype){
         return_type = retype;
@@ -18,7 +19,7 @@ public class FunType extends Type{
         calllist = oth.calllist;
     }
     public FunType(int i){
-
+     is_lambda = true;
     }
 
 }

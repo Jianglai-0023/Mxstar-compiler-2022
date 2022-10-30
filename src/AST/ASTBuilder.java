@@ -379,7 +379,16 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
          LamExNode node= new LamExNode (new position(ctx));
           node.is_in = (ctx.lambdaExpression().And() == null);
           ctx.lambdaExpression().statement().forEach(i->node.stmts.add((StmtNode) visit(i)));
-          ctx.lambdaExpression().functionCallList().expression().forEach(it->node.call_lists.add((ExprNode) visit(it)));//todo parameter_list
+          if(ctx.lambdaExpression().functionParametersList()!=null){
+                  for(int i = 0; i < ctx.lambdaExpression().functionParametersList().Identifier().size(); i++){
+                      int dim = get_dim(ctx.lambdaExpression().functionParametersList().theTypeName(i).getText());
+                      String type_name = get_type(ctx.lambdaExpression().functionParametersList().theTypeName(i));
+                      String idn = ctx.lambdaExpression().functionParametersList().Identifier(i).getText();
+                      node.parameters.add(new VarDef(type_name,idn,new position(ctx),dim));
+                  }
+          }
+          if(ctx.lambdaExpression().functionCallList()!=null)
+              ctx.lambdaExpression().functionCallList().expression().forEach(it->node.call_list.add((ExprNode) visit(it)));
           return node;
       }
     }

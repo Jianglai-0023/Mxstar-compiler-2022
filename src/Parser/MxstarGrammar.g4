@@ -119,7 +119,7 @@ assignmentExpression:
 expression:assignmentExpression;//binary
 
 lambdaExpression:
-                LeftBracket And? RightBracket (LeftParen functionParametersList? RightParen)? Arrow LeftBracket statement* RightBracket LeftParen functionCallList? RightParen;
+                LeftBracket And? RightBracket (LeftParen functionParametersList? RightParen)? Arrow LeftBrace statement* RightBrace LeftParen functionCallList? RightParen;
 
 //lambdaExpression_out:
 //                   LeftBracket RightBracket (LeftParen functionParametersList? RightParen)? Arrow compoundStatement LeftParen functionCallList? RightParen;

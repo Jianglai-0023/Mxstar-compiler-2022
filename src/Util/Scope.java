@@ -3,6 +3,7 @@ package Util;
 import Util.error.semanticError;
 
 import java.util.HashMap;
+import org.antlr.v4.runtime.misc.Pair;
 
 public class Scope {
 
@@ -12,6 +13,8 @@ public class Scope {
     private Scope parentScope;
     public FunType is_func = null;
     public ClsType is_cls = null;
+
+    public boolean is_global = false;
 
     public boolean is_in_loop = false;
 
@@ -44,7 +47,7 @@ public class Scope {
             return parentScope.containsVariable(name, true);
         else return false;
     }
-    public ClsType getVarType(String name, boolean lookUpon) {
+    private ClsType getVarType(String name, boolean lookUpon) {
         if (members.containsKey(name)) return members.get(name);
         else if(is_cls!=null && is_cls.var.containsKey(name))return is_cls.var.get(name);
         else if (parentScope != null && lookUpon)
@@ -67,5 +70,22 @@ public class Scope {
     public boolean Is_in_constru(){
         if(!is_constru&&parentScope!=null)return parentScope.Is_in_constru();
         return is_constru;
+    }
+    public Pair<ClsType,FunType> find_var_def(String name){
+        if(is_cls!=null){
+            if(is_cls.fun.containsKey(name)){
+                return new Pair<>(null,is_cls.fun.get(name));
+            }
+            else if(is_cls.var.containsKey(name))return new Pair<>(is_cls.var.get(name),null);
+//            else if(members.containsKey(name))return new Pair<>(members.get(name),null);
+            else if(parentScope!=null)return parentScope.find_var_def(name);
+            else return new Pair<>(null,null);
+        }
+        else{
+            if(members.containsKey(name))return new Pair<>(members.get(name),null);
+            else if(parentScope!=null)return parentScope.find_var_def(name);
+            else return new Pair<>(null,null);
+        }
+
     }
 }

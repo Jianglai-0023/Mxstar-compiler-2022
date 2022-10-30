@@ -2508,15 +2508,11 @@ public class MxstarGrammarParser extends Parser {
 	}
 
 	public static class LambdaExpressionContext extends ParserRuleContext {
-		public List<TerminalNode> LeftBracket() { return getTokens(MxstarGrammarParser.LeftBracket); }
-		public TerminalNode LeftBracket(int i) {
-			return getToken(MxstarGrammarParser.LeftBracket, i);
-		}
-		public List<TerminalNode> RightBracket() { return getTokens(MxstarGrammarParser.RightBracket); }
-		public TerminalNode RightBracket(int i) {
-			return getToken(MxstarGrammarParser.RightBracket, i);
-		}
+		public TerminalNode LeftBracket() { return getToken(MxstarGrammarParser.LeftBracket, 0); }
+		public TerminalNode RightBracket() { return getToken(MxstarGrammarParser.RightBracket, 0); }
 		public TerminalNode Arrow() { return getToken(MxstarGrammarParser.Arrow, 0); }
+		public TerminalNode LeftBrace() { return getToken(MxstarGrammarParser.LeftBrace, 0); }
+		public TerminalNode RightBrace() { return getToken(MxstarGrammarParser.RightBrace, 0); }
 		public List<TerminalNode> LeftParen() { return getTokens(MxstarGrammarParser.LeftParen); }
 		public TerminalNode LeftParen(int i) {
 			return getToken(MxstarGrammarParser.LeftParen, i);
@@ -2603,7 +2599,7 @@ public class MxstarGrammarParser extends Parser {
 			setState(348);
 			match(Arrow);
 			setState(349);
-			match(LeftBracket);
+			match(LeftBrace);
 			setState(353);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -2619,7 +2615,7 @@ public class MxstarGrammarParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(356);
-			match(RightBracket);
+			match(RightBrace);
 			setState(357);
 			match(LeftParen);
 			setState(359);
@@ -3607,11 +3603,11 @@ public class MxstarGrammarParser extends Parser {
 		"\u0000\u0000\u0000\u0157\u0158\u0001\u0000\u0000\u0000\u0158\u0159\u0001"+
 		"\u0000\u0000\u0000\u0159\u015b\u0005\u0015\u0000\u0000\u015a\u0155\u0001"+
 		"\u0000\u0000\u0000\u015a\u015b\u0001\u0000\u0000\u0000\u015b\u015c\u0001"+
-		"\u0000\u0000\u0000\u015c\u015d\u00054\u0000\u0000\u015d\u0161\u0005\u0016"+
+		"\u0000\u0000\u0000\u015c\u015d\u00054\u0000\u0000\u015d\u0161\u0005\u0018"+
 		"\u0000\u0000\u015e\u0160\u0003H$\u0000\u015f\u015e\u0001\u0000\u0000\u0000"+
 		"\u0160\u0163\u0001\u0000\u0000\u0000\u0161\u015f\u0001\u0000\u0000\u0000"+
 		"\u0161\u0162\u0001\u0000\u0000\u0000\u0162\u0164\u0001\u0000\u0000\u0000"+
-		"\u0163\u0161\u0001\u0000\u0000\u0000\u0164\u0165\u0005\u0017\u0000\u0000"+
+		"\u0163\u0161\u0001\u0000\u0000\u0000\u0164\u0165\u0005\u0019\u0000\u0000"+
 		"\u0165\u0167\u0005\u0014\u0000\u0000\u0166\u0168\u0003\b\u0004\u0000\u0167"+
 		"\u0166\u0001\u0000\u0000\u0000\u0167\u0168\u0001\u0000\u0000\u0000\u0168"+
 		"\u0169\u0001\u0000\u0000\u0000\u0169\u016a\u0005\u0015\u0000\u0000\u016a"+

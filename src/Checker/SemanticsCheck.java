@@ -4,6 +4,7 @@ import AST.*;
 import AST.ASTNode.*;
 import Util.*;
 import Util.error.semanticError;
+import org.antlr.v4.runtime.misc.Pair;
 
 public class SemanticsCheck implements ASTVisitor {
     private Scope currentScope;
@@ -14,6 +15,7 @@ public class SemanticsCheck implements ASTVisitor {
     public SemanticsCheck(globalScope gScope) {
         currentScope = this.gScope = gScope;
     }
+
     public boolean type_equal(ClsType x,ClsType y){
 
         if(x.idn.equals("null")&&y.dim!=0||(y.idn.equals("null")&&x.dim!=0))return true;
@@ -50,22 +52,33 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(VarDefNode it) {
-        if(currentScope.getVarType(it.idn,true)==null){//可能是函数，寻找顺序必须先将本层的全部找完，才能到下一层
-            if(currentScope.is_in_cls()==null){
-                it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
-            }
-            else{
-                it.fun_type=currentScope.is_in_cls().fun.get(it.idn);
-                if(it.fun_type==null){
-                    it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
-                }
-            }
-            if(it.fun_type==null)throw new semanticError("undefined var type",it.pos);
-            it.type = it.fun_type.return_type;
-            return;
+        Pair<ClsType,FunType> var = currentScope.find_var_def(it.idn);
+        if(var.a==null&&var.b==null)throw new semanticError("no var def",it.pos);
+        if(var.a!=null){
+            it.type = new ClsType(var.a);
+            it.fun_type = null;
+            it.is_left_val = true;
         }
-        it.type = new ClsType(currentScope.getVarType(it.idn,true));
-        it.is_left_val = true;
+        else{
+            it.type = new ClsType(var.b.return_type);
+            it.fun_type = new FunType(var.b);
+        }
+//        if(currentScope.getVarType(it.idn,true)==null){//可能是函数，寻找顺序必须先将本层的全部找完，才能到下一层
+//            if(currentScope.is_in_cls()==null){
+//                it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
+//            }
+//            else{
+//                it.fun_type=currentScope.is_in_cls().fun.get(it.idn);
+//                if(it.fun_type==null){
+//                    it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
+//                }
+//            }
+//            if(it.fun_type==null)throw new semanticError("undefined var type",it.pos);
+//            it.type = it.fun_type.return_type;
+//            return;
+//        }
+//        it.type = new ClsType(currentScope.getVarType(it.idn,true));
+//        it.is_left_val = true;
     }
 
     @Override
@@ -98,9 +111,18 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(SleStmtNode it) {
+
         it.exp.accept(this);
         if(!it.exp.type.idn.equals("bool"))throw new semanticError("Semantic Error: if expression not bool",it.pos);
-        it.stmts.forEach(i->i.accept(this));
+        for(int i = 0; i < it.stmts.size(); ++i){
+            currentScope = new Scope(currentScope);
+            System.out.println("goIn");
+            it.stmts.get(i).accept(this);
+            currentScope = currentScope.parentScope();
+            System.out.println("goOut");
+        }
+//        it.stmts.forEach(i->i.accept(this));
+
     }
 
     @Override
@@ -108,8 +130,10 @@ public class SemanticsCheck implements ASTVisitor {
         currentScope.is_in_loop = true;
         if(it.is_while)
         {
+            currentScope = new Scope(currentScope);
             it.con.accept(this);
             it.stmt.accept(this);
+            currentScope = currentScope.parentScope();
         }
         else{
             currentScope = new Scope(currentScope);
@@ -304,6 +328,7 @@ public class SemanticsCheck implements ASTVisitor {
         it.type = new ClsType(it.target.type);
         it.type.dim = it.target.type.dim-1;
         it.idx.accept(this);
+        if(!type_equal(it.idx.type,new ClsType("int"))||it.type.dim>1) throw new semanticError("wrong array idx",it.pos);
         it.is_left_val = true;
 //        if(it.type == null || it.type.dim < it.dim)throw new semanticError("wrong array exp",it.pos);
     }
@@ -312,27 +337,38 @@ public class SemanticsCheck implements ASTVisitor {
     public void visit(LamExNode it) {
         currentScope = new Scope(currentScope);
         currentScope.is_func = new FunType(0);//empty的函数Scope//todo
-        it.stmts.forEach(i->i.accept(this));
-        if(currentScope.is_func.return_type==null)it.type = new ClsType(gScope.getClsTypeFromName("void",it.pos));
-        else it.type = currentScope.is_func.return_type;
-        currentScope = currentScope.parentScope();
-
-        if(it.parameters==null && it.call_lists!=null || it.parameters!=null && it.call_lists==null)throw new semanticError("can't match call and para in lambda",it.pos);
-        if(it.call_lists!=null&&it.parameters!=null){
-            it.parameters.forEach(i->i.accept(this));
-            it.call_lists.forEach(i->i.accept(this));
-            if(it.call_lists.size()!=it.parameters.size())throw new semanticError("unmatch para size in lambda",it.pos);
-            for(int i = 0; i < it.call_lists.size(); ++i){
-                if(!it.call_lists.get(i).type.idn.equals(it.parameters.get(i).type.idn)||it.call_lists.get(i).type.dim!=it.parameters.get(i).type.dim)throw new semanticError("element can't match in lambda",it.pos);
-            }
+        for(int i = 0; i < it.parameters.size(); ++i){
+            ClsType c = gScope.getClsTypeFromName(it.parameters.get(i).idn,it.pos);
+            c.dim = it.parameters.get(i).dim;
+            it.para_type.add(new ClsVarType(c,it.parameters.get(i).idn));
+            currentScope.defineVariable(it.parameters.get(i).idn,c,it.pos);
         }
-
+        it.call_list.forEach(i->i.accept(this));
+        if(it.call_list.size()!=it.parameters.size())throw new semanticError("wrong lambda call number",it.pos);
+        for(int i = 0; i < it.call_list.size(); ++i){
+            if(!type_equal(it.call_list.get(i).type,it.para_type.get(i).type))throw new semanticError("unmatch lambda call type",it.pos);
+        }
+        it.stmts.forEach(i->i.accept(this));
+        if(currentScope.is_in_fun().return_type==null)it.type = new ClsType(gScope.getClsTypeFromName("void",it.pos));
+        else it.type = new ClsType(currentScope.is_in_fun().return_type);
+//        if(it.parameters==null && it.call_lists!=null || it.parameters!=null && it.call_lists==null)throw new semanticError("can't match call and para in lambda",it.pos);
+//        if(it.call_lists!=null&&it.parameters!=null){
+//            it.parameters.forEach(i->i.accept(this));
+//            it.call_lists.forEach(i->i.accept(this));
+//            if(it.call_lists.size()!=it.parameters.size())throw new semanticError("unmatch para size in lambda",it.pos);
+//            for(int i = 0; i < it.call_lists.size(); ++i){
+//                if(!it.call_lists.get(i).type.idn.equals(it.parameters.get(i).type.idn)||it.call_lists.get(i).type.dim!=it.parameters.get(i).type.dim)throw new semanticError("element can't match in lambda",it.pos);
+//            }
+//        }
+        currentScope = currentScope.parentScope();
     }
 
     @Override
     public void visit(JpStmtNode it) {
          if(it.exp!=null)it.exp.accept(this);
-         if(it.exp==null && it.is_return)it.re_type =new ClsType(gScope.getClsTypeFromName("void",it.pos));
+         if(it.exp==null && it.is_return){
+             it.re_type =new ClsType(gScope.getClsTypeFromName("void",it.pos));
+         }
          if(it.is_return){
              if(!currentScope.Is_in_constru()&&(currentScope.is_in_fun()==null))throw new semanticError("return out of func",it.pos);
 
@@ -342,7 +378,9 @@ public class SemanticsCheck implements ASTVisitor {
              }
              it.re_type = it.exp.type;
              FunType f = currentScope.is_in_fun();
-             if(!type_equal(f.return_type,it.re_type))throw new semanticError("unmatch return type",it.pos);
+             if(!f.is_lambda&&!type_equal(f.return_type,it.re_type))
+                 throw new semanticError("unmatch return type",it.pos);
+             if(f.is_lambda)f.return_type = new ClsType(it.re_type);
          }
          else if((it.is_continue || it.is_break) && !currentScope.Is_in_loop())
              throw new semanticError("break or continue out of loop",it.pos);
