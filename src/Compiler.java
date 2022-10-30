@@ -17,9 +17,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Compiler {
     public static void main(String[] args) throws Exception{
-        String name = "testcases/sema/basic-package/basic-32.mx";
-        InputStream input_stream = new FileInputStream(name);
-//        InputStream input_stream = System.in;
+//        String name = "testcases/sema/basic-package/basic-32.mx";
+//        InputStream input_stream = new FileInputStream(name);
+        InputStream input_stream = System.in;
         CharStream charstream = CharStreams.fromStream(input_stream);
         try
         {
