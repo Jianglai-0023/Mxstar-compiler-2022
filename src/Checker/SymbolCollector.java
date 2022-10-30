@@ -50,6 +50,10 @@ public class SymbolCollector implements ASTVisitor {
         PrintInt.calllist.add(new ClsVarType(Int,"n"));
         this.gScope.addfunType("printInt",PrintInt,new position(0,0));
 
+        FunType PrintlnInt = new FunType(Void);
+        PrintlnInt.calllist.add(new ClsVarType(Int,"n"));
+        this.gScope.addfunType("printlnInt",PrintlnInt,new position(0,0));
+
         FunType GetString = new FunType(String);
 //        Getstring.calllist.add(new ClsVarType(String,"str"));
         this.gScope.addfunType("getString",GetString,new position(0,0));
@@ -85,6 +89,7 @@ public class SymbolCollector implements ASTVisitor {
     public void visit(DecStmtNode it) {
             for(int j = 0; j < it.var.size(); ++j){
                 ClsType dec= new ClsType(gScope.getClsTypeFromName(it.var.get(j).type,it.var.get(j).pos));
+                dec.dim = it.dim;
                 gScope.is_cls.var.put(it.var.get(j).idn,dec);
             }
     }

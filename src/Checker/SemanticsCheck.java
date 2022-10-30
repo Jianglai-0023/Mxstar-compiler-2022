@@ -89,7 +89,7 @@ public class SemanticsCheck implements ASTVisitor {
 //        System.out.println("!!");
 //        System.out.println(it.dim);
             clst.dim = it.dim;
-            it.type = clst;
+            it.type = new ClsType(clst);
        for(ExprNode ex:it.exprs){
            ex.accept(this);
            if(!ex.type.idn.equals("null")&&!type_equal(ex.type,it.type))
@@ -98,6 +98,8 @@ public class SemanticsCheck implements ASTVisitor {
         for(VarDef def : it.var){
 //           System.out.println("()()");
 //           System.out.println(def.idn);
+//            System.out.println(it.type.dim);
+//            System.out.println(it.type.idn);
             currentScope.defineVariable(def.idn,new ClsType(it.type),it.pos);
         }
     }
