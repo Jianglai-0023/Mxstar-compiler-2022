@@ -329,7 +329,7 @@ public class SemanticsCheck implements ASTVisitor {
         it.type = new ClsType(it.target.type);
         it.type.dim = it.target.type.dim-1;
         it.idx.accept(this);
-        if(!type_equal(it.idx.type,new ClsType("int"))||it.type.dim>1) throw new semanticError("wrong array idx",it.pos);
+        if(!type_equal(it.idx.type,new ClsType("int"))||it.idx.type.dim>=1) throw new semanticError("wrong array idx",it.pos);
         it.is_left_val = true;
 //        if(it.type == null || it.type.dim < it.dim)throw new semanticError("wrong array exp",it.pos);
     }
