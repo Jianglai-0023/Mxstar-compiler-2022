@@ -65,7 +65,7 @@ selfExpression:
 
 singleExpression:
       selfExpression|
-     (PlusPlus|MinusMinus)selfExpression;//single
+     (PlusPlus|MinusMinus)singleExpression;//single
 
 postExpression:
       singleExpression|
@@ -87,7 +87,7 @@ additiveOperator:	Plus | Minus;
 shiftExpression:
 	additiveExpression (shiftOperator additiveExpression)*;
 
-shiftOperator: Greater Greater | Less Less;//binary
+shiftOperator: GreaterGreater | LessLess;//binary
 
 relationalExpression:
 	shiftExpression ( relationaloperator shiftExpression)*;
@@ -231,6 +231,9 @@ Star: '*';
 Div: '/';
 
 Mod: '%';
+
+GreaterGreater:'>>';
+LessLess:'<<';
 
 Equal: '=';
 //关系运算符

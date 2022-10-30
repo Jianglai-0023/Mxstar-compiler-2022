@@ -105,6 +105,7 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(ItStmtNode it) {
+        currentScope.is_in_loop = true;
         if(it.is_while)
         {
             it.con.accept(this);
@@ -118,6 +119,7 @@ public class SemanticsCheck implements ASTVisitor {
             it.stmt.accept(this);
             currentScope = currentScope.parentScope();
         }
+        currentScope.is_in_loop = false;
     }
 
     @Override
@@ -184,7 +186,8 @@ public class SemanticsCheck implements ASTVisitor {
              it.type = new ClsType("bool");
             return;
          }
-         else if(!type_equal(it.lson.type,it.rson.type))throw new semanticError("unmatch type in BI",it.pos);
+         else if(!type_equal(it.lson.type,it.rson.type))
+             throw new semanticError("unmatch type in BI",it.pos);
          //判断type
          if(it.op.compareTo(OP.LESS)>=0&& it.op.compareTo(OP.NOT) <= 0)
              it.type = new ClsType("bool");
@@ -192,7 +195,7 @@ public class SemanticsCheck implements ASTVisitor {
 
          if(it.op.compareTo(OP.PLUS)==0 && !it.lson.type.idn.equals("string")&&!it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type0",it.pos);
 
-         else if(it.op.compareTo(OP.PLUS)>0 && it.op.compareTo(OP.MOD)<=0 && !it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type1",it.pos);
+         else if(it.op.compareTo(OP.PLUS)>0 && it.op.compareTo(OP.GREATERGREATER)<=0 && !it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type1",it.pos);
 //         else if(it.op.compareTo(OP.LESS) >= 0 && it.op.compareTo(OP.NOTEQUAL)<=0 && (!it.lson.type.idn.equals("string") && !it.lson.type.idn.equals("int")))throw new semanticError("wrong plus type2",it.pos);
          else if(it.op.compareTo(OP.ANDAND)>=0 && it.op.compareTo(OP.NOT)<=0 && !it.lson.type.idn.equals("bool"))throw new semanticError("wrong plus type3",it.pos);
          else if(it.op.compareTo(OP.AND)>=0 && it.op.compareTo(OP.OR)<=0&&!it.lson.type.idn.equals("int"))throw new semanticError("wrong plus type4",it.pos);
@@ -208,7 +211,8 @@ public class SemanticsCheck implements ASTVisitor {
         if(it.op==OP.NOT && !it.exp.type.idn.equals("bool"))throw new semanticError("wrong SinEx",it.pos);
         if(it.op==OP.L_PLUSPLUS||it.op==OP.L_MINUSMINUS)it.is_left_val = true;
         if((it.op==OP.L_PLUSPLUS||it.op==OP.R_PLUSPLUS ||it.op==OP.L_MINUSMINUS||it.op==OP.R_MINUSMINUS)&& !it.exp.is_left_val)throw new semanticError("single with unleft",it.pos);
-        if(!it.type.idn.equals("int")&&it.op!=OP.NOT)throw new semanticError("wrong sinex type",it.pos);
+        if(!it.type.idn.equals("int")&&it.op!=OP.NOT)
+            throw new semanticError("wrong sinex type",it.pos);
     }
 
     @Override
@@ -243,6 +247,9 @@ public class SemanticsCheck implements ASTVisitor {
     public void visit(MemExNode it) {
        it.target.accept(this);
 //       it.type = it.target.type;
+        System.out.println("Mem");
+        System.out.println(it.target.type.dim);
+        System.out.println(it.target.type.idn);
         if(it.target.type.dim!=0 && it.member.equals("size")){
             it.fun_type = new FunType(new ClsType("int"));
             it.type = new ClsType("int");
@@ -277,7 +284,7 @@ public class SemanticsCheck implements ASTVisitor {
     @Override
     public void visit(NewExNode it) {
         if(it.err_array)throw new semanticError("array new wrong index",it.pos);
-        ClsType c = new ClsType(it.type_name);
+        ClsType c = new ClsType(gScope.getClsTypeFromName(it.type_name,it.pos));
         c.dim = it.dim;
         it.type = c;
 //         if(currentScope.getVarType(it.idn,true)==null || currentScope.getVarType(it.idn,true).dim != it.dim)throw  new semanticError("can't new",it.pos);
@@ -289,7 +296,7 @@ public class SemanticsCheck implements ASTVisitor {
     public void visit(ArrExNode it) {//dim 在node中维护
         it.target.accept(this);
         System.out.println("&&&");
-        System.out.println(it.target.type.dim);
+        System.out.println(it.target.type.idn);
         it.type = new ClsType(it.target.type);
         it.type.dim = it.target.type.dim-1;
         it.idx.accept(this);
@@ -322,12 +329,14 @@ public class SemanticsCheck implements ASTVisitor {
     public void visit(JpStmtNode it) {
          if(it.exp!=null)it.exp.accept(this);
          if(it.exp==null && it.is_return)it.re_type =new ClsType(gScope.getClsTypeFromName("void",it.pos));
-         else if(it.is_return){
-             it.re_type = it.exp.type;
+         if(it.is_return){
+             if(it.exp!=null)it.re_type = it.exp.type;
              FunType f = currentScope.is_in_fun();
              if(f == null)throw new semanticError("return out of function",it.pos);
              if(!type_equal(f.return_type,it.re_type))throw new semanticError("unmatch return type",it.pos);
          }
+         else if((it.is_continue || it.is_break) && !currentScope.Is_in_loop())
+             throw new semanticError("break or continue out of loop",it.pos);
 
     }
 }

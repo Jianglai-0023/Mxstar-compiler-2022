@@ -172,8 +172,8 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
                node.exp = (ExprNode) visit(ctx.expression());
            }
        }
-//       else if(ctx.Break()!=null)node.type = ctx.Break().getText();
-//       else node.type = ctx.Continue().getText();
+       else if(ctx.Break() != null)node.is_break = true;
+       else node.is_continue = true;
        return node;
     }
     @Override public ASTNode visitIterationStatement(MxstarGrammarParser.IterationStatementContext ctx){
@@ -284,7 +284,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitShiftExpression(MxstarGrammarParser.ShiftExpressionContext ctx){
         ExprNode node = (ExprNode)visit(ctx.additiveExpression(0));
         for(int i = 1; i < ctx.additiveExpression().size(); ++i){
-            OP str = (ctx.shiftOperator(i-1).Greater()!=null) ? OP.GREATER:OP.LESS;
+            OP str = (ctx.shiftOperator(i-1).GreaterGreater()!=null) ? OP.GREATERGREATER:OP.LESSLESS;
             node = new BiExNode(new position(ctx),str,node,(ExprNode) visit(ctx.additiveExpression(i)));
         }
         return node;
@@ -328,11 +328,11 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
        if(ctx.PlusPlus()!=null)str = OP.L_PLUSPLUS;
        else if(ctx.MinusMinus()!= null)str = OP.L_MINUSMINUS;
        else {
-           return (ExprNode)visit(ctx.selfExpression());
+           return visit(ctx.selfExpression());
 
        }
        SinExNode node = new SinExNode(new position(ctx),str);
-       node.exp = (ExprNode) visit((ctx.selfExpression()));
+       node.exp = (ExprNode) visit((ctx.singleExpression()));
        return node;
     }
 

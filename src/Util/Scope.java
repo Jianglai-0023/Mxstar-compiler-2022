@@ -13,6 +13,8 @@ public class Scope {
     public FunType is_func = null;
     public ClsType is_cls = null;
 
+    public boolean is_in_loop = false;
+
     public boolean is_constru = false;
 
     public Scope(Scope parentScope) {
@@ -58,4 +60,8 @@ public class Scope {
         return is_func;
     }
 
+    public boolean Is_in_loop() {
+        if(!is_in_loop&&parentScope!=null)return parentScope.is_in_loop;
+        return is_in_loop;
+    }
 }

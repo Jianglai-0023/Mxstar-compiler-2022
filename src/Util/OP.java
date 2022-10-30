@@ -5,6 +5,8 @@ public enum OP{
     STAR,
     DIV,
     MOD,
+    LESSLESS,
+    GREATERGREATER,
 
     EQUAL,
     LESS,

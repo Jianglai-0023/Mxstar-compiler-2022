@@ -32,7 +32,7 @@ public class SymbolCollector implements ASTVisitor {
         String.fun.put("parseInt",new FunType(Int));
         FunType Ord = new FunType(Int);
         Ord.calllist.add(new ClsVarType(Int,"pos"));
-        String.fun.put("order",Ord);
+        String.fun.put("ord",Ord);
         this.gScope.addclsType("string",String,new position(0,0));
 
         ClsType Null = new ClsType("null");

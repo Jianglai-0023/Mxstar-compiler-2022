@@ -11,6 +11,9 @@ public class JpStmtNode extends StmtNode {
     public ExprNode exp = null;
     public boolean is_return = false;
 
+    public boolean is_break = false;
+    public boolean is_continue = false;
+
     public ClsType re_type;
 
     public JpStmtNode(position pos) {
