@@ -34,7 +34,7 @@ public class globalScope extends Scope {
     }
     @Override
     public Pair<ClsType,FunType> find_var_def(String name){
-        if(cls_types.containsKey(name))return new Pair<>(cls_types.get(name),null);
+        if(members.containsKey(name))return new Pair<>(members.get(name),null);
         else return new Pair<>(null, func_types.getOrDefault(name, null));
     }
 }

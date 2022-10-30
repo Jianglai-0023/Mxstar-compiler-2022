@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.misc.Pair;
 
 public class Scope {
 
-    private HashMap<String,ClsType> members;//变量定义
+    protected HashMap<String,ClsType> members;//变量定义
 
 
     private Scope parentScope;

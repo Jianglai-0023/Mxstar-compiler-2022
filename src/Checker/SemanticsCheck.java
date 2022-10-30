@@ -53,6 +53,7 @@ public class SemanticsCheck implements ASTVisitor {
     @Override
     public void visit(VarDefNode it) {
         Pair<ClsType,FunType> var = currentScope.find_var_def(it.idn);
+        System.out.println(it.idn);
         if(var.a==null&&var.b==null)throw new semanticError("no var def",it.pos);
         if(var.a!=null){
             it.type = new ClsType(var.a);
