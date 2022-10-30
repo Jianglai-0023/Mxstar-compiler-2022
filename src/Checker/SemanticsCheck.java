@@ -50,7 +50,7 @@ public class SemanticsCheck implements ASTVisitor {
 
     @Override
     public void visit(VarDefNode it) {
-        if(currentScope.getVarType(it.idn,true)==null){//可能是函数
+        if(currentScope.getVarType(it.idn,false)==null){//可能是函数，寻找顺序必须先将本层的全部找完，才能到下一层
             if(currentScope.is_in_cls()==null){
                 it.fun_type = gScope.getFunTypeFromName(it.idn,it.pos);
             }
@@ -287,6 +287,10 @@ public class SemanticsCheck implements ASTVisitor {
         ClsType c = new ClsType(gScope.getClsTypeFromName(it.type_name,it.pos));
         c.dim = it.dim;
         it.type = c;
+        for(int i = 0; i < it.exps.size(); ++i){
+            it.exps.get(i).accept(this);
+            if(!type_equal(it.exps.get(i).type,new ClsType("int")))throw new semanticError("array exp not int",it.pos);
+        }
 //         if(currentScope.getVarType(it.idn,true)==null || currentScope.getVarType(it.idn,true).dim != it.dim)throw  new semanticError("can't new",it.pos);
 //         if(it.err_array)throw new semanticError("wrong array new",it.pos);
 //         it.type = currentScope.getVarType(it.idn,true);
@@ -330,9 +334,14 @@ public class SemanticsCheck implements ASTVisitor {
          if(it.exp!=null)it.exp.accept(this);
          if(it.exp==null && it.is_return)it.re_type =new ClsType(gScope.getClsTypeFromName("void",it.pos));
          if(it.is_return){
-             if(it.exp!=null)it.re_type = it.exp.type;
+             if(!currentScope.Is_in_constru()&&(currentScope.is_in_fun()==null))throw new semanticError("return out of func",it.pos);
+
+             if(it.exp==null){
+                 if(!currentScope.Is_in_constru() && !currentScope.is_in_fun().return_type.idn.equals("void"))throw new semanticError("unmatch return type1",it.pos);
+                 return;
+             }
+             it.re_type = it.exp.type;
              FunType f = currentScope.is_in_fun();
-             if(f == null)throw new semanticError("return out of function",it.pos);
              if(!type_equal(f.return_type,it.re_type))throw new semanticError("unmatch return type",it.pos);
          }
          else if((it.is_continue || it.is_break) && !currentScope.Is_in_loop())

@@ -403,6 +403,7 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
                 node.err_array = true;
                 break;
             }
+            else if(ctx.theTypeName().bracket(i).expression()!=null)node.exps.add((ExprNode) visit(ctx.theTypeName().bracket(i).expression()));
         }
         return node;
     }

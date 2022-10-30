@@ -99,7 +99,13 @@ public class SymbolCollector implements ASTVisitor {
             ClsType my = new ClsType(gScope.getClsTypeFromName(it.idn,it.pos));
             gScope.is_cls = my;
             for(int i = 0; i < it.funs.size(); ++i){
+                if(it.funs.get(i).idn.equals(it.idn))throw new semanticError("function name same as cls",it.pos);
                 it.funs.get(i).accept(this);
+            }
+            if(it.constructs.size()>1)throw new semanticError("to many constructs",it.pos);
+            for(int i = 0; i < it.constructs.size(); ++i){
+                 if(!it.constructs.get(i).idn.equals(it.idn))throw new semanticError("constru func different name with cls",it.pos);
+                it.constructs.get(i).accept(this);
             }
             it.decs.forEach(p-> p.accept(this));
             gScope.is_cls = null;
@@ -107,7 +113,9 @@ public class SymbolCollector implements ASTVisitor {
     }
     @Override
     public void visit(FunDecNode it) {
-         FunType t = new FunType(gScope.getClsTypeFromName(it.re_type_name,it.pos));
+        ClsType re = new ClsType(gScope.getClsTypeFromName(it.re_type_name,it.pos));
+        re.dim = it.dim;
+         FunType t = new FunType(re);
          for(int i = 0; i < it.para.size(); ++i){
              ClsType pa = new ClsType(gScope.getClsTypeFromName(it.para.get(i).type,it.pos));
              pa.dim = it.para.get(i).dim;//数组

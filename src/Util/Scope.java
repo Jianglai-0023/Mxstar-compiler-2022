@@ -61,7 +61,11 @@ public class Scope {
     }
 
     public boolean Is_in_loop() {
-        if(!is_in_loop&&parentScope!=null)return parentScope.is_in_loop;
+        if(!is_in_loop&&parentScope!=null)return parentScope.Is_in_loop();
         return is_in_loop;
+    }
+    public boolean Is_in_constru(){
+        if(!is_constru&&parentScope!=null)return parentScope.Is_in_constru();
+        return is_constru;
     }
 }
