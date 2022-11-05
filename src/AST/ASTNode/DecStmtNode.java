@@ -22,8 +22,6 @@ public class DecStmtNode extends StmtNode {
         var = new ArrayList<>();
         exprs = new ArrayList<>();
     }
-
-    //    abstract public void accept(ASTVisitor visitor);
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

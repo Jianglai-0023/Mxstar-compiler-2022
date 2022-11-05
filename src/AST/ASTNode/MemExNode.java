@@ -9,8 +9,6 @@ public class MemExNode extends ExprNode {
     public String member;
     public ExprNode target;
 
-//    public String op;//运算符
-//    public int dim;
 
     public MemExNode(position pos,ExprNode fa,String son) {
         super(pos);

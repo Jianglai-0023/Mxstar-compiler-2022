@@ -33,9 +33,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
         if(typename.Bool()!=null){
             return typename.Bool().getText();
         }
-//        else if(typename.Void()!=null){
-//            return typename.Void().getText();
-//        }
         else if(typename.Int()!=null){
             return typename.Int().getText();
         }
@@ -136,7 +133,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
           stmt.is_var_dec = true;
           if(ctx.primaryDeclaration()!=null){
               stmt.dim =  get_dim(ctx.primaryDeclaration().theTypeName().getText());
-//              System.out.println(stmt.dim);
               stmt.type_name = get_type(ctx.primaryDeclaration().theTypeName());
               if(ctx.primaryDeclaration().expression()!=null){
                   for(ParserRuleContext exps:ctx.primaryDeclaration().expression())
@@ -146,8 +142,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
           }
      return stmt;
     }
-
-    //todo visit expression node
 
     @Override public ASTNode visitExpressionStatement(MxstarGrammarParser.ExpressionStatementContext ctx){
         ExprStmtNode node = new ExprStmtNode(new position(ctx));
@@ -203,7 +197,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitCondition(MxstarGrammarParser.ConditionContext ctx){
         ConNode node = new ConNode(new position(ctx));
         node.exp = (ExprNode) visit(ctx.expression());
-//        node.type = node.exp.type;
         return node;
     }
 
@@ -238,7 +231,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
             node = new BiExNode(new position(ctx),OP.OR,node,(ExprNode) visit(ctx.exclusiveOrExpression(i)));
         }
         return node;
-//        if(ctx.Or()!=null){//todo type
     }
 
     @Override public ASTNode visitExclusiveOrExpression(MxstarGrammarParser.ExclusiveOrExpressionContext ctx){
@@ -247,7 +239,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
             node = new BiExNode(new position(ctx),OP.CARET,node,(ExprNode) visit(ctx.andExpression(i)));
         }
         return node;
-//        if(ctx.Caret()!=null){//todo type
     }
 
     @Override public ASTNode visitAndExpression(MxstarGrammarParser.AndExpressionContext ctx){
@@ -256,7 +247,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
             node = new BiExNode(new position(ctx),OP.AND,node,(ExprNode) visit(ctx.equalityExpression(i)));
         }
         return node;
-//        if(ctx.And()!=null){//todo type
     }
 
     @Override public ASTNode visitEqualityExpression(MxstarGrammarParser.EqualityExpressionContext ctx){
@@ -329,7 +319,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
        else if(ctx.MinusMinus()!= null)str = OP.L_MINUSMINUS;
        else {
            return visit(ctx.selfExpression());
-
        }
        SinExNode node = new SinExNode(new position(ctx),str);
        node.exp = (ExprNode) visit((ctx.singleExpression()));
@@ -351,7 +340,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
     @Override public ASTNode visitPrimaryExpression(MxstarGrammarParser.PrimaryExpressionContext ctx){
       if(ctx.constantExpression()!=null){
           return visit(ctx.constantExpression());
-//          return new ConExNode(new position(ctx),"constant");
       }
       else if(ctx.Identifier()!=null && ctx.Dot()==null){
           return new VarDefNode(new position(ctx),ctx.Identifier().getText(),0);
@@ -371,8 +359,6 @@ public class ASTBuilder extends MxstarGrammarBaseVisitor<ASTNode> {
       } else if (ctx.LeftBracket() != null) {//array
           ExprNode pri = (ExprNode) visit(ctx.primaryExpression());
           int dim = pri.dim - 1;
-//          System.out.println("QWQ");
-//          System.out.println(dim);
           return new ArrExNode(new position(ctx),pri,(ExprNode)visit(ctx.expression()),dim);
       }
       else{//lambda

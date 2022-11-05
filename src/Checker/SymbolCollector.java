@@ -5,12 +5,11 @@ import AST.ASTVisitor;
 import AST.ASTNode.*;
 import Util.*;
 import Util.error.semanticError;
-import com.sun.source.tree.VariableTree;
 
 public class SymbolCollector implements ASTVisitor {
-    private globalScope gScope;
+    private final globalScope gScope;
     private boolean first_class_look;
-    private ClsType now_class = null;
+    private final ClsType now_class = null;
     public SymbolCollector(globalScope gScope) {
         this.gScope = gScope;
 
@@ -55,19 +54,14 @@ public class SymbolCollector implements ASTVisitor {
         this.gScope.addfunType("printlnInt",PrintlnInt,new position(0,0));
 
         FunType GetString = new FunType(String);
-//        Getstring.calllist.add(new ClsVarType(String,"str"));
         this.gScope.addfunType("getString",GetString,new position(0,0));
 
         FunType GetInt = new FunType(Int);
-//        GetInt.calllist.add(new ClsVarType(String,"str"));
         this.gScope.addfunType("getInt",GetInt,new position(0,0));
 
         FunType Tstring = new FunType(String);
         Tstring.calllist.add(new ClsVarType(Int,"i"));
         this.gScope.addfunType("toString",Tstring,new position(0,0));
-
-//        ClsType Array = new ClsType("array");
-//        this.gScope.addclsType("array",Array,new position(0,0));
     }
     @Override
     public void visit(RootNode it) {
@@ -97,12 +91,10 @@ public class SymbolCollector implements ASTVisitor {
     public void visit(ClsDecNode it) {
         if(!first_class_look) {
             ClsType t = new ClsType(it.idn);
-//            System.out.println(it.idn);
             gScope.addclsType(it.idn,t,it.pos);
         }
         else {
-            ClsType my = new ClsType(gScope.getClsTypeFromName(it.idn,it.pos));
-            gScope.is_cls = my;
+            gScope.is_cls = new ClsType(gScope.getClsTypeFromName(it.idn,it.pos));
             for(int i = 0; i < it.funs.size(); ++i){
                 if(it.funs.get(i).idn.equals(it.idn))throw new semanticError("function name same as cls",it.pos);
                 it.funs.get(i).accept(this);

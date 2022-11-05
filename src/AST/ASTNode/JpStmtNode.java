@@ -19,8 +19,6 @@ public class JpStmtNode extends StmtNode {
     public JpStmtNode(position pos) {
         super (pos);
     }
-
-    //    abstract public void accept(ASTVisitor visitor);
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

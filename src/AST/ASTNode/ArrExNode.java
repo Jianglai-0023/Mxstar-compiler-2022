@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class ArrExNode extends ExprNode {
     public ExprNode target;
     public ExprNode idx;
-//    public String idn;
 
 
     public ArrExNode(position pos,ExprNode tar,ExprNode id,int dim_) {

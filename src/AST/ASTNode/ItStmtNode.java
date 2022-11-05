@@ -21,7 +21,6 @@ public class ItStmtNode extends StmtNode {
         super (pos);
     }
 
-    //    abstract public void accept(ASTVisitor visitor);
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

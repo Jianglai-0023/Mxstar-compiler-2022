@@ -6,7 +6,7 @@ import Util.OP;
 
 public class SinExNode extends ExprNode {
     public OP op;//运算符
-//    public int dim;
+
     public ExprNode exp;
 
 
