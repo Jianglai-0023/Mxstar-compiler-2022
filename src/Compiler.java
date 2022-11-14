@@ -1,15 +1,13 @@
-import AST.ASTBuilder;
-import AST.ASTNode.RootNode;
-import Checker.SemanticsCheck;
-import Checker.SymbolCollector;
-import Parser.MxstarGrammarLexer;
-import Parser.MxstarGrammarParser;
-import Util.*;
-
-import java.io.FileInputStream;
+import Semantic.AST.ASTBuilder;
+import Semantic.AST.ASTNode.RootNode;
+import Semantic.Checker.SemanticsCheck;
+import Semantic.Checker.SymbolCollector;
+import Semantic.Parser.MxstarGrammarLexer;
+import Semantic.Parser.MxstarGrammarParser;
+import Semantic.Util.globalScope;
 import java.io.InputStream;
 
-import Util.error.MxErrorListener;
+import Semantic.Util.error.MxErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
