@@ -3,11 +3,17 @@ package codegen.llvmIR;
 
 import Semantic.AST.ASTNode.*;
 import Semantic.AST.ASTVisitor;
+import Semantic.Util.Scope;
+import Semantic.Util.globalScope;
+import codegen.llvmIR.tools.IRModule;
 
 public class IRBuilder implements ASTVisitor {
-
-    public IRBuilder(RootNode astroot){
-            this.visit(astroot);
+    public final IRModule module = new IRModule();
+    public final IRCurrent current_block = new IRCurrent();
+    private final globalScope gscope;
+    private Scope current_Scope;
+    public IRBuilder(globalScope gscope){
+         current_Scope = this.gscope  = gscope;
     }
 
     @Override

@@ -1,0 +1,8 @@
+package codegen.llvmIR.tools;
+
+public class IRModule {
+    public IRModule(){
+
+    }
+
+}
