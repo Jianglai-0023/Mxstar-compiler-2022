@@ -1,4 +1,4 @@
 package codegen.llvmIR.Inst;
 
-public class Ret {
+public class Ret extends Inst {
 }

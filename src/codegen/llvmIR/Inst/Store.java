@@ -1,4 +1,4 @@
 package codegen.llvmIR.Inst;
 
-public class Store {
+public class Store extends Inst {
 }

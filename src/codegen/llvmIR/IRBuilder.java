@@ -18,12 +18,13 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(RootNode it) {
+        it.sequent.forEach(x->x.accept(this));
 
     }
 
     @Override
     public void visit(FnRootNode it) {
-
+//nothing need to do
     }
 
     @Override

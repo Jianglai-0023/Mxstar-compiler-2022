@@ -1,4 +1,4 @@
 package codegen.llvmIR.Inst;
 
-public class Getelementptr {
+public class Getelementptr extends Inst{
 }

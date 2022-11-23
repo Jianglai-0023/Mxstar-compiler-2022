@@ -1,4 +1,4 @@
 package codegen.llvmIR.Inst;
 
-public class Global {
+public class Global extends Inst{
 }
