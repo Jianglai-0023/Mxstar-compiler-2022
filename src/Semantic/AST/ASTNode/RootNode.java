@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class RootNode extends ASTNode {
     public ArrayList<ASTNode> sequent = new ArrayList<>();
-    public FnRootNode fn;
     public RootNode(position pos) {
          super (pos);
     }

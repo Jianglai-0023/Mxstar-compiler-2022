@@ -12,9 +12,9 @@ public abstract class Entity {
         type = type_;
     }
 
-    public Entity(){
-
-    }
+//    public Entity(){
+//
+//    }
 
     public abstract String getValue();
 

@@ -2,14 +2,24 @@ package Semantic.Util;
 
 
 import Semantic.Util.error.semanticError;
+import codegen.llvmIR.tools.Class;
+import codegen.llvmIR.tools.Function;
 import org.antlr.v4.runtime.misc.Pair;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import codegen.llvmIR.Type.IRcls;
 
 public class globalScope extends Scope {
 
     private HashMap<String, ClsType> cls_types = new HashMap<>();
     private HashMap<String,FunType> func_types = new HashMap<>();
+
+    private HashMap<String, Class> cls_ir = new HashMap<>();
+
+    private HashMap<String, Function> func_ir = new HashMap<>();
+
     public globalScope(Scope parentScope) {
         super(parentScope);
         is_global = true;
@@ -37,5 +47,17 @@ public class globalScope extends Scope {
     public Pair<ClsType,FunType> find_var_def(String name){
         if(members.containsKey(name))return new Pair<>(members.get(name),null);
         else return new Pair<>(null, func_types.getOrDefault(name, null));
+    }
+
+    public void add_IRcls(Class cls){
+        cls_ir.put(cls.name,cls);
+    }
+
+    public void add_func(Function f){
+        func_ir.put(f.name,f);
+    }
+
+    public Class get_IRcls_from_name(String name){
+        return cls_ir.get(name);
     }
 }

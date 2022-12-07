@@ -2,13 +2,13 @@ package codegen.llvmIR.Type;
 
 import codegen.llvmIR.tools.Class;
 
-public class clsType extends IRType {
+public class IRcls extends IRType {
     public String className;
     public String identifier;
     public int bytes;
     public Class cl;
 
-    public clsType(Class cl_){
+    public IRcls(Class cl_){
         cl = cl_;
         className = cl.name;
         identifier = cl.identifier;
@@ -18,5 +18,10 @@ public class clsType extends IRType {
     @Override
     public int getBytes() {
         return bytes;
+    }
+
+    @Override
+    public String toString(){
+        return "%" + identifier;
     }
 }

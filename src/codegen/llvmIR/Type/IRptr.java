@@ -1,9 +1,9 @@
 package codegen.llvmIR.Type;
 
-public class ptrType extends IRType {
+public class IRptr extends IRType {
     public IRType type;
 
-    public ptrType(IRType type_){
+    public IRptr(IRType type_){
         type = type_;
     }
 

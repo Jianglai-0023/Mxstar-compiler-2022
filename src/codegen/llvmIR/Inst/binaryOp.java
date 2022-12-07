@@ -16,7 +16,7 @@ public class binaryOp extends Inst{
     @Override
     public String toString() {
         String re = "%" + rd.toString() + " = " + op.name().toLowerCase();
-        re = re + type.toString() + rs1.toString() + "," + rs2.toString();
+        re = re + type.toString() + rs1.getValue() + "," + rs2.getValue();
         return re;
     }
 }

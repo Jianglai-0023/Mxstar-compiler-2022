@@ -1,10 +1,10 @@
 package codegen.llvmIR.Type;
 
-public class arrayType extends IRType {
+public class IRarray extends IRType {
     public int size;
     public IRType type;
 
-    public arrayType(IRType t, int s){
+    public IRarray(IRType t, int s){
         size = s;
         type = t;
     }

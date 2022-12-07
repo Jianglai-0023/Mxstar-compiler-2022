@@ -1,8 +1,8 @@
 package codegen.llvmIR.Inst;
 
-public class Bitcast extends Inst{
+public class bitcast extends Inst{
     @Override
-    public String printString() {
+    public String toString() {
         return null;
     }
 }

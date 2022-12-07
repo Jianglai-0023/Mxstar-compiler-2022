@@ -1,6 +1,6 @@
 package codegen.llvmIR.Type;
 
-public class baseType extends IRType {
+public class IRbase extends IRType {
 
       public enum typeToken{
         VOID,I,LABEL
@@ -8,10 +8,11 @@ public class baseType extends IRType {
       public typeToken type_name;
       public int bits;
 
-      public baseType(typeToken t,int bits_){
+      public IRbase(typeToken t, int bits_){
         type_name = t;
         bits = bits_;
       }
+
 
   @Override
     public int getBytes(){
@@ -19,5 +20,11 @@ public class baseType extends IRType {
       case VOID,LABEL -> 0;
       case I -> bits == 1 ? 1 : bits/8;
     };
+  }
+  @Override
+    public String toString(){
+          String s = type_name.name().toLowerCase();
+          if(type_name==typeToken.I) s += Integer.toString(bits);
+          return s;
   }
 }

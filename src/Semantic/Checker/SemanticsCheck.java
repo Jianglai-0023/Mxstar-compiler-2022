@@ -204,7 +204,7 @@ public class SemanticsCheck implements ASTVisitor {
     }
 
     @Override
-    public void visit(ConExNode it) {
+    public void visit(ConExNode it) {//CONSTANT
         if(it.type_name.equals("this")){
             if(currentScope.is_in_cls()==null)throw new semanticError("this is out",it.pos);
             it.type = new ClsType(currentScope.is_in_cls());

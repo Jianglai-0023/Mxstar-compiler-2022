@@ -14,9 +14,9 @@ public class Class {
 
     public ArrayList<IRType> vars = new ArrayList<>();
 
-    public Class(String i){
+    public Class(String nam,String i){
         identifier = i;
-        name = i.substring(6);
+        name = nam;
     }
 
 }

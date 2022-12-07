@@ -3,16 +3,18 @@ package codegen.llvmIR.Inst;
 import codegen.llvmIR.Entity.Entity;
 import codegen.llvmIR.Type.IRType;
 
-import java.util.EventObject;
-
-public class Store extends Inst {
+public class load extends Inst{
     Entity tar,res;
-    public Store(Entity t,Entity r){
+    IRType type;
+    public load(Entity t,Entity r, IRType ty){
         tar = t;
         res = r;
+        type = ty;
     }
+
     @Override
     public String toString(){
-        return "store " + tar + ", " + res;
+        return tar.getValue() + " = load " + type + ", " + res;
     }
+
 }

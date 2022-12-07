@@ -5,11 +5,15 @@ import Semantic.AST.ASTNode.*;
 import Semantic.AST.ASTVisitor;
 import Semantic.Util.Scope;
 import Semantic.Util.globalScope;
+import codegen.llvmIR.Type.IRbase;
+import codegen.llvmIR.tools.Function;
+import codegen.llvmIR.tools.IRBlock;
 import codegen.llvmIR.tools.IRModule;
 
 public class IRBuilder implements ASTVisitor {
     public final IRModule module = new IRModule();
-    public final IRCurrent current_block = new IRCurrent();
+    public final IRBlock current_block = new IRBlock();
+    public Function cur_function = new Function();
     private final globalScope gscope;
     private Scope current_Scope;
     public IRBuilder(globalScope gscope){
@@ -18,12 +22,20 @@ public class IRBuilder implements ASTVisitor {
 
     @Override
     public void visit(RootNode it) {
-        it.sequent.forEach(x->x.accept(this));
+        //global function记得加入
+        for(int i = 0; i < it.sequent.size(); ++i){
+            if(it.sequent.get(i) instanceof FnRootNode)continue;
+            else if(it.sequent.get(i) instanceof StmtNode){
 
+            }
+        }
     }
 
     @Override
     public void visit(FnRootNode it) {
+        cur_function = new Function("main",new IRbase(IRbase.typeToken.I,32));
+        module.fns.add(cur_function);
+
 //nothing need to do
     }
 

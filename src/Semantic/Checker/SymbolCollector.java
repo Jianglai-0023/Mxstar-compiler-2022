@@ -89,7 +89,7 @@ public class SymbolCollector implements ASTVisitor {
     }
     @Override
     public void visit(ClsDecNode it) {
-        if(!first_class_look) {
+        if(!first_class_look) {///FIRST
             ClsType t = new ClsType(it.idn);
             gScope.addclsType(it.idn,t,it.pos);
         }
